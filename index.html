@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>福岡市 新築マンションMAP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+    }
+
+    #map { width: 100vw; height: 100vh; }
+
+    .leaflet-div-icon {
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .property-card {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+      box-sizing: border-box;
+    }
+
+    /* 狭域（詳細カード） */
+    .property-card-full {
+      padding: 8px 10px;
+      min-width: 180px;
+      max-width: 220px;
+      font-size: 11px;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .property-card-inner {
+      flex: 1;
+      min-width: 0;
+    }
+    .property-card-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .highlight {
+      color: #f97316; /* 坪単価の文字色は常にオレンジ */
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* 坪単価ランク用バー（フルカード） */
+    .tsubo-bar {
+      width: 4px;
+      height: 52px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* 広域（坪単価のみカード） */
+    .property-card-compact {
+      padding: 4px 10px;
+      min-width: 70px;
+      max-width: 120px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #f97316; /* 文字色オレンジ固定 */
+    }
+    .tsubo-bar-compact {
+      width: 4px;
+      height: 16px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    /* ================================
+       チップ型フィルター UI
+    ================================ */
+    #chip-filter {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 9999;
+      background: rgba(255,255,255,0.98);
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .chip-label {
+      margin-right: 4px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid #d0d7e5;
+      padding: 4px 12px;
+      background: #ffffff;
+      font-size: 12px;
+      cursor: pointer;
+      color: #333;
+      transition: all 0.15s ease;
+    }
+
+    .chip:hover {
+      background: #f1f5f9;
+    }
+
+    .chip-active {
+      background: #2563eb;
+      color: #ffffff !important;
+      border-color: #2563eb;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <!-- チップ型フィルター（複数選択対応） -->
+  <div id="chip-filter">
+    <span class="chip-label">坪単価</span>
+    <button class="chip chip-active" data-filter="all">全</button>
+    <button class="chip" data-filter="200">〜200</button>
+    <button class="chip" data-filter="201-300">201〜300</button>
+    <button class="chip" data-filter="301">301〜</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- 物件リスト -->
+  <script src="properties.js"></script>
+
+  <script>
+    /* ========= Zoom モード判定 ========= */
+    function getModeFromZoom() {
+      const z = map.getZoom();
+      return z >= 15 ? "full" : "compact"; // 狭域/広域
+    }
+
+    /* ========= 坪単価の数値・色判定 ========= */
+    function parseTsuboValue(tsubo) {
+      if (!tsubo) return null;
+      const m = String(tsubo).match(/(\d+)/);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    function getTsuboColor(tsubo) {
+      const v = parseTsuboValue(tsubo);
+      if (v === null || Number.isNaN(v)) return "#6b7280"; // 不明：グレー
+      if (v <= 200) return "#22c55e";  // 200以下：緑
+      if (v <= 300) return "#f97316";  // 201〜300：オレンジ
+      return "#ef4444";                // 301以上：赤
+    }
+
+    /* ========= カードHTML生成 ========= */
+    function createCardHTML(p, mode) {
+      const tsuboColor = getTsuboColor(p.tsubo);
+
+      if (mode === "full") {
+        return `
+          <div class="property-card property-card-full">
+            <div class="tsubo-bar" style="background-color:${tsuboColor};"></div>
+            <div class="property-card-inner">
+              <div class="property-card-title">${p.name}</div>
+              ${p.tsubo ? `<div class="highlight">${p.tsubo}</div>` : ""}
+              ${p.units ? `<div>${p.units}</div>` : ""}
+              ${p.developer ? `<div>${p.developer}</div>` : ""}
+              ${p.sale ? `<div>販売：${p.sale}</div>` : ""}
+              ${p.completion ? `<div>竣工：${p.completion}</div>` : ""}
+            </div>
+          </div>
+        `;
+      } else {
+        const label = p.tsubo ? p.tsubo : "－";
+        return `
+          <div class="property-card property-card-compact">
+            <div class="tsubo-bar-compact" style="background-color:${tsuboColor};"></div>
+            <span>${label}</span>
+          </div>
+        `;
+      }
+    }
+
+    function createCardIcon(p, mode) {
+      const html = createCardHTML(p, mode);
+      if (mode === "full") {
+        return L.divIcon({
+          className: "property-card-wrapper",
+          html,
+          iconSize: [220, 90],
+          iconAnchor: [110, 100],
+        });
+      } else {
+        return L.divIcon({
+          className: "property-card-wrapper",
+          html,
+          iconSize: [80, 34],
+          iconAnchor: [40, 38],
+        });
+      }
+    }
+
+    /* ========= 地図初期化 ========= */
+    const map = L.map("map").setView([33.59, 130.40], 12);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(map);
+
+    /* ========= プロット管理 ========= */
+    let rendered = [];
+
+    function clearRendered() {
+      rendered.forEach(obj => {
+        if (obj.dot)  map.removeLayer(obj.dot);
+        if (obj.card) map.removeLayer(obj.card);
+        if (obj.line) map.removeLayer(obj.line);
+      });
+      rendered = [];
+    }
+
+    // シンプルなオフセットパターン（重なり回避ロジックは無し）
+    function getCardOffset(index, mode) {
+      if (mode === "compact") {
+        return { lat: 0, lng: 0 }; // 広域は点の近く
+      }
+      const patterns = [
+        { lat: 0.0020, lng: 0 },
+        { lat: 0.0016, lng: 0.0016 },
+        { lat: 0.0016, lng: -0.0016 },
+        { lat: 0.0024, lng: 0.0010 },
+        { lat: 0.0024, lng: -0.0010 },
+      ];
+      return patterns[index % patterns.length];
+    }
+
+    /* ========= 坪単価フィルタ（複数選択） ========= */
+    // 例: ["all"] or ["200","301"] など
+    let activeFilters = ["all"];
+
+    function matchTsuboFilter(p, filters) {
+      // "all" が含まれている、またはフィルターが空なら全件表示
+      if (!filters || filters.length === 0 || filters.includes("all")) {
+        return true;
+      }
+
+      const v = parseTsuboValue(p.tsubo);
+      if (v === null || Number.isNaN(v)) return false;
+
+      // フィルタ配列のいずれかにマッチしたら表示（OR 条件）
+      for (const f of filters) {
+        if (f === "200" && v <= 200) return true;
+        if (f === "201-300" && v >= 201 && v <= 300) return true;
+        if (f === "301" && v >= 301) return true;
+      }
+      return false;
+    }
+
+    /* ========= プロット描画 ========= */
+    function plotAll() {
+      clearRendered();
+      const mode = getModeFromZoom();
+      const filters = activeFilters;
+
+      properties.forEach((p, index) => {
+        // フィルタ条件に合わないものは非表示
+        if (!matchTsuboFilter(p, filters)) return;
+        if (!p.lat || !p.lng) return;
+
+        const base = [p.lat, p.lng];
+
+        // 点（青）
+        const dot = L.circleMarker(base, {
+          radius: 4,
+          color: "#2563eb",
+          fillColor: "#2563eb",
+          weight: 2,
+          fillOpacity: 1,
+        }).addTo(map);
+
+        // カード位置（固定オフセット）
+        const offset = getCardOffset(index, mode);
+        const cardPos = [p.lat + offset.lat, p.lng + offset.lng];
+
+        // カード（狭域のみドラッグ可）
+        const cardMarker = L.marker(cardPos, {
+          icon: createCardIcon(p, mode),
+          draggable: mode === "full",
+        }).addTo(map);
+
+        // 引出線（青）
+        const line = L.polyline([base, cardPos], {
+          color: "#2563eb",
+          weight: 2.5,
+        }).addTo(map);
+
+        // ドラッグ時は線を追従
+        if (mode === "full") {
+          cardMarker.on("drag", (e) => {
+            const newPos = e.target.getLatLng();
+            line.setLatLngs([base, newPos]);
+          });
+        }
+
+        rendered.push({ dot, card: cardMarker, line });
+      });
+    }
+
+    plotAll();
+    map.on("zoomend", plotAll);
+
+    // ==========================
+    //   チップクリックイベント（複数選択）
+    // ==========================
+    document.querySelectorAll("#chip-filter .chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const filter = btn.dataset.filter;
+
+        if (filter === "all") {
+          // ALL を押したら他を全部 OFF、ALL だけ ON
+          activeFilters = ["all"];
+          document.querySelectorAll("#chip-filter .chip").forEach(c => {
+            c.classList.toggle("chip-active", c.dataset.filter === "all");
+          });
+        } else {
+          // 数値レンジチップのトグル
+          const idx = activeFilters.indexOf(filter);
+
+          // まず "all" は無効化
+          activeFilters = activeFilters.filter(f => f !== "all");
+
+          if (idx === -1) {
+            // 今 OFF → ON にする
+            activeFilters.push(filter);
+            btn.classList.add("chip-active");
+          } else {
+            // 今 ON → OFF にする
+            activeFilters.splice(idx, 1);
+            btn.classList.remove("chip-active");
+          }
+
+          // どれも選ばれていない場合は ALL に戻す
+          if (activeFilters.length === 0) {
+            activeFilters = ["all"];
+            document.querySelectorAll("#chip-filter .chip").forEach(c => {
+              c.classList.toggle("chip-active", c.dataset.filter === "all");
+            });
+          } else {
+            // ALL ボタンだけ OFF にする
+            const allBtn = document.querySelector('#chip-filter .chip[data-filter="all"]');
+            if (allBtn) allBtn.classList.remove("chip-active");
+          }
+        }
+
+        // 地図を再描画
+        plotAll();
+      });
+    });
+  </script>
+</body>
+</html>

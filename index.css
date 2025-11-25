@@ -1,0 +1,60 @@
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+/* 狭域（詳細） */
+.property-card-full {
+  padding: 8px 10px;
+  min-width: 180px;
+  max-width: 220px;
+  font-size: 11px;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.property-card-inner {
+  flex: 1;
+  min-width: 0;
+}
+.property-card-title {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.highlight {
+  color: #f97316;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* 坪単価ランク用バー（フルカード） */
+.tsubo-bar {
+  width: 4px;
+  height: 52px;      /* ★ここで高さを指定 */
+  border-radius: 999px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* 広域（坪単価のみ） */
+.property-card-compact {
+  padding: 4px 10px;
+  min-width: 70px;
+  max-width: 120px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f97316;
+}
+.tsubo-bar-compact {
+  width: 4px;
+  height: 16px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
