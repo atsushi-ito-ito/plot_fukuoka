@@ -171,8 +171,8 @@ const properties = [
   },
   {
     name: "城西1丁目PJ",
-    lat: 33.5825904,
-    lng: 130.3642717,
+    lat: 33.5813671,
+    lng: 130.3632921,
     tsubo: "@450",
     units: "総戸数_未定",
     developer: "（九州旅客鉄道/関電不動産開発）",
@@ -181,8 +181,8 @@ const properties = [
   },
   {
     name: "西新7丁目PJ",
-    lat: 33.5825904,
-    lng: 130.3642717,
+    lat: 33.5867699,
+    lng: 130.3450001,
     tsubo: "@450",
     units: "90戸",
     developer: "（住友不動産）",
