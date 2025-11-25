@@ -411,8 +411,8 @@ const properties = [
   },
   {
     name: "六本松4丁目PJ",
-    lat: 33.57622,
-    lng: 130.3756588,
+    lat: 33.5760917,
+    lng: 130.3761051,
     tsubo: null,
     units: "68戸",
     developer: "（JR西日本不動産開発）",
