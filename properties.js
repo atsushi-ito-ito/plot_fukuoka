@@ -8,6 +8,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2025/07",
     completion: "2027/01",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+  　ward: "西区",     // ← 行政区
   },
   {
     name: "サンメゾン姪浜",
@@ -18,16 +20,8 @@ const properties = [
     developer: "（サンヨーホームズ）",
     sale: "2025/10",
     completion: "2027/01",
-  },
-  {
-    name: "オープンレジデンシア西新",
-    lat: 33.5814402,
-    lng: 130.3621107,
-    tsubo: "@400",
-    units: "33戸",
-    developer: "（オープンハウス･ディベロップメント）",
-    sale: "2024/06",
-    completion: "2025/08",
+    walk: "8分",          // ← 最寄り駅まで徒歩7分
+    ward: "西区",     // ← 行政区
   },
   {
     name: "家庭裁判所跡地PJ",
@@ -38,16 +32,8 @@ const properties = [
     developer: "（野村不動産/東京建物/西日本鉄道/九電不動産）",
     sale: "未定",
     completion: "未定",
-  },
-  {
-    name: "クリオラベルヴィ西新グランクラス",
-    lat: 33.5843487,
-    lng: 130.3611337,
-    tsubo: null,
-    units: "45戸",
-    developer: "（明和地所）",
-    sale: "2024/04",
-    completion: "2025/09",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "オープンレジデンシア室見",
@@ -58,26 +44,8 @@ const properties = [
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2024/10",
     completion: "2025/11",
-  },
-  {
-    name: "モントーレ室見パークレジデンス",
-    lat: 33.5758538,
-    lng: 130.341126,
-    tsubo: null,
-    units: "29戸",
-    developer: "（西武ハウス）",
-    sale: "2024/07",
-    completion: "2025/09",
-  },
-  {
-    name: "アルファステイツ姪浜南",
-    lat: 33.5734814,
-    lng: 130.3221741,
-    tsubo: "@280",
-    units: "61戸",
-    developer: "（穴吹興産）",
-    sale: "2024/12",
-    completion: "2026/03",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "西区",     // ← 行政区
   },
   {
     name: "グランフォーレ西新ナチュリア",
@@ -88,16 +56,8 @@ const properties = [
     developer: "（コーセーアールイー）",
     sale: "2025/01",
     completion: "2025/12",
-  },
-  {
-    name: "グランドメゾン大濠公園PREMIUM",
-    lat: 33.5891032,
-    lng: 130.3724241,
-    tsubo: null,
-    units: "15戸",
-    developer: "（積水ハウス）",
-    sale: "2026/04",
-    completion: "未定",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "グランドメゾンONE大濠PARK",
@@ -108,6 +68,8 @@ const properties = [
     developer: "（積水ハウス/九電不動産/三菱地所レジデンス）",
     sale: "2025/09",
     completion: "2027/10",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "イノバス大濠公園",
@@ -118,6 +80,8 @@ const properties = [
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2025/03",
     completion: "2026/05",
+    walk: "8分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "大手門3丁目計画",
@@ -128,6 +92,8 @@ const properties = [
     developer: "（JR西日本不動産開発/サンヨーホームズ）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "荒戸PJ",
@@ -138,6 +104,8 @@ const properties = [
     developer: "（三井不動産レジデンシャル）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ラ・アトレレジデンス大濠公園",
@@ -148,6 +116,8 @@ const properties = [
     developer: "（ラ・アトレ）",
     sale: "2025/10",
     completion: "2027/05",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "リビオ西新二丁目",
@@ -158,6 +128,8 @@ const properties = [
     developer: "（日鉄興和不動産）",
     sale: "2025/02",
     completion: "2026/01",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "イノバス西新",
@@ -168,6 +140,8 @@ const properties = [
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2025/05",
     completion: "2026/05",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "城西1丁目PJ",
@@ -178,6 +152,8 @@ const properties = [
     developer: "（九州旅客鉄道/関電不動産開発）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "西新7丁目PJ",
@@ -188,6 +164,8 @@ const properties = [
     developer: "（住友不動産）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "グランフォーレ姪浜駅南レジデンス",
@@ -198,6 +176,8 @@ const properties = [
     developer: "（コーセーアールイー）",
     sale: "2025/02",
     completion: "2025/10",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "西区",     // ← 行政区
   },
   {
     name: "グランフォーレ室見レジデンス",
@@ -208,6 +188,8 @@ const properties = [
     developer: "（コーセーアールイー）",
     sale: "2025/02",
     completion: "2025/12",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "ブライトクロス橋本",
@@ -218,6 +200,8 @@ const properties = [
     developer: "（大和ハウス工業/西日本鉄道）",
     sale: "未定",
     completion: "未定",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "西区",     // ← 行政区
   },
   {
     name: "フリーディア草香江1丁目",
@@ -228,6 +212,8 @@ const properties = [
     developer: "（東宝住宅）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "大濠1丁目PJ",
@@ -238,16 +224,8 @@ const properties = [
     developer: "（九電不動産）",
     sale: "未定",
     completion: "未定",
-  },
-  {
-    name: "ザ・パークハウス大手門",
-    lat: 33.5900907,
-    lng: 130.386376,
-    tsubo: "@513",
-    units: "66戸",
-    developer: "（三菱地所レジデンス/積水ハウス/日鉄興和不動産）",
-    sale: "2024/08",
-    completion: "2026/07",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ウエリス赤坂BAYSIDE",
@@ -258,6 +236,8 @@ const properties = [
     developer: "（NTT都市開発）",
     sale: "2025/10",
     completion: "2026/11",
+    walk: "11分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "舞鶴PJ",
@@ -268,6 +248,8 @@ const properties = [
     developer: "（三菱地所レジデンス）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "MJR赤坂ゲートタワー",
@@ -278,6 +260,8 @@ const properties = [
     developer: "（九州旅客鉄道/長谷工不動産/日鉄興和不動産）",
     sale: "未定",
     completion: "未定",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "DEUX･RESIA大濠並木通り",
@@ -288,6 +272,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2025/10",
     completion: "2027/05",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ザ・サンパーク西新",
@@ -298,6 +284,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2025/06",
     completion: "2026/11",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "アルファステイツ野芥駅Ⅱ",
@@ -308,6 +296,8 @@ const properties = [
     developer: "（穴吹興産）",
     sale: "2025/09",
     completion: "2027/04",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "クレアネクスト別府4丁目",
@@ -318,6 +308,8 @@ const properties = [
     developer: "（セントラル総合開発）",
     sale: "2025/10",
     completion: "2026/07",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "城南区",     // ← 行政区
   },
   {
     name: "サンパーク荒江PJ",
@@ -328,6 +320,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "城南区",     // ← 行政区
   },
   {
     name: "大濠PJ",
@@ -338,6 +332,8 @@ const properties = [
     developer: "（NTT都市開発）",
     sale: "2024/07",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "アクタス茶山グランミライ",
@@ -348,6 +344,8 @@ const properties = [
     developer: "（クレ・コーポレーション）",
     sale: "2024/10",
     completion: "2025/07",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "城南区",     // ← 行政区
   },
   {
     name: "エンクレストガーデン福岡",
@@ -358,6 +356,8 @@ const properties = [
     developer: "（えんホールディングス）",
     sale: "2023/07",
     completion: "2025/12",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "クラブスタイル神松寺",
@@ -368,6 +368,8 @@ const properties = [
     developer: "（アライアンス）",
     sale: "2025/07",
     completion: "2026/02",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "城南区",     // ← 行政区
   },
   {
     name: "アクロス六本松ラ・クラス",
@@ -378,6 +380,8 @@ const properties = [
     developer: "（福岡知行）",
     sale: "2025/02",
     completion: "2025/12",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "モントーレ六本松ザ・マーク",
@@ -388,6 +392,8 @@ const properties = [
     developer: "（西武ハウス）",
     sale: "2025/08",
     completion: "2026/12",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "パークホームズ福岡浄水通",
@@ -398,6 +404,8 @@ const properties = [
     developer: "（三井不動産レジデンシャル）",
     sale: "2025/09",
     completion: "2026/07",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ジェイグラン六本松レジデンス",
@@ -408,6 +416,8 @@ const properties = [
     developer: "（JR西日本不動産開発）",
     sale: "2025/12",
     completion: "2025/11",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "六本松4丁目PJ",
@@ -418,16 +428,8 @@ const properties = [
     developer: "（JR西日本不動産開発）",
     sale: "不明",
     completion: "不明",
-  },
-  {
-    name: "マークネクスト薬院2丁目",
-    lat: null,
-    lng: null,
-    tsubo: null,
-    units: "総戸数_未定",
-    developer: "（三菱地所レジデンス/西日本鉄道）",
-    sale: "未定",
-    completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ザ・パークハウス大濠翠景",
@@ -438,6 +440,8 @@ const properties = [
     developer: "（三菱地所レジデンス）",
     sale: "2024/03",
     completion: "2025/02",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "スタンスレジデンス平尾市崎",
@@ -448,6 +452,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2025/03",
     completion: "2026/08",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "デュ･レジア薬院ザ･シティ",
@@ -458,6 +464,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2025/04",
     completion: "2026/08",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "アクロス薬院グレイスステージ",
@@ -468,6 +476,8 @@ const properties = [
     developer: "（福岡知行）",
     sale: "2024/10",
     completion: "2025/09",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "アトラス薬院タワーレジデンス",
@@ -478,6 +488,8 @@ const properties = [
     developer: "（旭化成不動産レジデンス）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "ファーネスト博多南駅グレイス",
@@ -488,6 +500,8 @@ const properties = [
     developer: "（ファミリー）",
     sale: "2025/11",
     completion: "2027/02",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
   },
   {
     name: "トラスト博多南駅レジデンス",
@@ -498,6 +512,8 @@ const properties = [
     developer: "（トラスト不動産開発）",
     sale: "2024/06",
     completion: "2025/04",
+    walk: "14分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "テラススタイル春日公園",
@@ -508,6 +524,8 @@ const properties = [
     developer: "（照栄建設）",
     sale: "2025/07",
     completion: "2025/11",
+    walk: "13分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
   },
   {
     name: "アルバガーデングランデージ下大利",
@@ -518,6 +536,8 @@ const properties = [
     developer: "（アルバクリエイト）",
     sale: "2025/04",
     completion: "2026/05",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "サンリヤン大野城駅前ブランシエラ",
@@ -528,6 +548,8 @@ const properties = [
     developer: "（西日本鉄道/長谷工不動産）",
     sale: "2024/07",
     completion: "2025/07",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "トラスト白木原レジデンス",
@@ -538,6 +560,8 @@ const properties = [
     developer: "（トラスト不動産開発）",
     sale: "2025/09",
     completion: "2026/05",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "ウエリス白木原",
@@ -548,6 +572,8 @@ const properties = [
     developer: "（NTT都市開発/住友不動産）",
     sale: "2023/11",
     completion: "2025/03",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "大野城PJ",
@@ -558,6 +584,8 @@ const properties = [
     developer: "（第一交通産業）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "セレンシオ春日THE NEXT",
@@ -568,6 +596,8 @@ const properties = [
     developer: "（辰巳開発）",
     sale: "2024/02",
     completion: "2025/02",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
   },
   {
     name: "オープンレジデンシア春日公園",
@@ -578,6 +608,8 @@ const properties = [
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2024/10",
     completion: "2025/08",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
   },
   {
     name: "ザ・サンパーク春日原駅レジデンス",
@@ -588,6 +620,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2024/02",
     completion: "2025/03",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "サンパーク春日原駅EXIA",
@@ -598,6 +632,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2025/08",
     completion: "2027/04",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "ジェイグラン春日原",
@@ -608,6 +644,8 @@ const properties = [
     developer: "（JR西日本不動産開発）",
     sale: "2025/02",
     completion: "2026/01",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "サンパーク春日原駅グラッセ",
@@ -618,6 +656,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2025/08",
     completion: "2027/01",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "ファーネスト桜並木駅レジスタ",
@@ -628,6 +668,8 @@ const properties = [
     developer: "（ファミリー）",
     sale: "2025/07",
     completion: "2026/10",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
   },
   {
     name: "サングレート博多グランシティ エグゼ",
@@ -638,6 +680,8 @@ const properties = [
     developer: "（タイヘイ）",
     sale: "2024/11",
     completion: "2026/08",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "アーバンパレス博多グロウサイド",
@@ -648,6 +692,8 @@ const properties = [
     developer: "（第一交通産業）",
     sale: "2023/11",
     completion: "2025/02",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "グランフォーレ春日原駅前レジデンス",
@@ -658,6 +704,8 @@ const properties = [
     developer: "（コーセーアールイー）",
     sale: "2024/04",
     completion: "2025/01",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
   },
   {
     name: "クラブスタイル井尻ファミーユ",
@@ -668,6 +716,8 @@ const properties = [
     developer: "（アライアンス）",
     sale: "2025/02",
     completion: "2026/03",
+    walk: "12分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "CLUB STYLE 馬出 Felicia",
@@ -678,26 +728,8 @@ const properties = [
     developer: "（アライアンス）",
     sale: "2024/02",
     completion: "2025/01",
-  },
-  {
-    name: "アクロス馬出",
-    lat: 33.6149622,
-    lng: 130.415109,
-    tsubo: "@330",
-    units: "総戸数_未定",
-    developer: "（福岡知行）",
-    sale: "未定",
-    completion: "未定",
-  },
-  {
-    name: "アクロス箱崎駅前クレスティア",
-    lat: 33.618667,
-    lng: 130.425139,
-    tsubo: null,
-    units: "27戸",
-    developer: "（福岡知行）",
-    sale: "2024/07",
-    completion: "2025/11",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "アイランドシティ ザ･ガーデン",
@@ -708,6 +740,8 @@ const properties = [
     developer: "（積水ハウス/福岡商事/西部ガス都市開発）",
     sale: "2024/02",
     completion: "2025/01",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "サンパークシティ香椎",
@@ -718,6 +752,8 @@ const properties = [
     developer: "（大英産業）",
     sale: "2025/04",
     completion: "2026/10",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "MJR千早ミッドスクエア",
@@ -728,6 +764,8 @@ const properties = [
     developer: "（九州旅客鉄道/住友不動産/日鉄興和不動産/長谷工不動産）",
     sale: "2023/01",
     completion: "2025/01",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "エイルマンション名島駅前",
@@ -738,6 +776,8 @@ const properties = [
     developer: "（作州商事）",
     sale: "2025/06",
     completion: "2026/09",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "イノバス箱崎",
@@ -748,6 +788,8 @@ const properties = [
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2025/09",
     completion: "2027/08",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
   {
     name: "ASSOCIA博多吉塚TERRACE",
@@ -758,6 +800,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2026/02",
     completion: "2027/05",
+    walk: "8分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "ネストピア博多イーストClass",
@@ -768,6 +812,8 @@ const properties = [
     developer: "（ネスト）",
     sale: "2025/08",
     completion: "2026/07",
+    walk: "11分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "クレアホームズフラン博多祇園",
@@ -778,6 +824,8 @@ const properties = [
     developer: "（セントラル総合開発）",
     sale: "2025/07",
     completion: "2026/02",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "プレサンスロジェ博多STATION NORTH",
@@ -788,6 +836,8 @@ const properties = [
     developer: "（プレサンスコーポレーション）",
     sale: "2025/04",
     completion: "2026/05",
+    walk: "12分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "リベール博多駅前",
@@ -798,6 +848,8 @@ const properties = [
     developer: "（SWOWAGROUP）",
     sale: "2023/11",
     completion: "2024/07",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "ファーネスト井尻グレイス",
@@ -808,6 +860,8 @@ const properties = [
     developer: "（ファミリー）",
     sale: "2025/03",
     completion: "2026/06",
+    walk: "13分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "エイル諸岡テラス",
@@ -818,6 +872,8 @@ const properties = [
     developer: "（作州商事）",
     sale: "2025/10",
     completion: "2027/02",
+    walk: "14分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "オーヴィジョン井尻",
@@ -828,6 +884,8 @@ const properties = [
     developer: "（エストラスト）",
     sale: "2024/03",
     completion: "2025/06",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "ファーネスト大橋東レジデンス",
@@ -838,6 +896,8 @@ const properties = [
     developer: "（ファミリー）",
     sale: "2025/06",
     completion: "2026/06",
+    walk: "13分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "デュレジア平尾レジデンス",
@@ -848,6 +908,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2024/07",
     completion: "2025/09",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "那の川PJ",
@@ -858,6 +920,8 @@ const properties = [
     developer: "（タカラレーベン）",
     sale: "未定",
     completion: "未定",
+    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "CLUB THE HOUSE大橋テラス",
@@ -868,6 +932,8 @@ const properties = [
     developer: "（アライアンス）",
     sale: "2025/07",
     completion: "2027/02",
+    walk: "8分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
   },
   {
     name: "クリオラベルヴィ薬院白金",
@@ -878,6 +944,8 @@ const properties = [
     developer: "（明和地所）",
     sale: "2025/10",
     completion: "2027/01",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "デュレジア博多アベニュー",
@@ -888,6 +956,8 @@ const properties = [
     developer: "（LANDIC）",
     sale: "2024/10",
     completion: "2026/01",
+    walk: "16分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "クリオ渡辺通セントラルマークス",
@@ -898,6 +968,8 @@ const properties = [
     developer: "（明和地所）",
     sale: "2025/02",
     completion: "2027/01",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
   {
     name: "アクタス博多グランミライプレミアム",
@@ -908,16 +980,8 @@ const properties = [
     developer: "（クレ・コーポレーション）",
     sale: "2025/08",
     completion: "2026/08",
-  },
-  {
-    name: "サンパーク博多那珂グラッセ",
-    lat: 33.5667762,
-    lng: 130.4443642,
-    tsubo: "@235",
-    units: "55戸",
-    developer: "（大英産業）",
-    sale: "2024/02",
-    completion: "2025/02",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "グランドパレス博多板付テラス",
@@ -928,6 +992,8 @@ const properties = [
     developer: "（第一交通産業）",
     sale: "2025/04",
     completion: "2026/03",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
   {
     name: "サングレート博多レクシアル",
@@ -938,5 +1004,19 @@ const properties = [
     developer: "（タイヘイ）",
     sale: "2024/03",
     completion: "2025/06",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
+  },
+  {
+    name: "アクロス箱崎宮前レイスマート",
+    lat: 33.6153075,
+    lng: 130.4167237,
+    tsubo: null,
+    units: "24戸",
+    developer: "（福岡知行）",
+    sale: "不明",
+    completion: "2026/12",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
   },
 ];

@@ -93,7 +93,7 @@
     }
 
     /* ================================
-       チップ型フィルター UI
+       フィルタパネル（チップ型）
     ================================ */
     #chip-filter {
       position: absolute;
@@ -102,12 +102,20 @@
       z-index: 9999;
       background: rgba(255,255,255,0.98);
       padding: 6px 10px;
-      border-radius: 999px;
+      border-radius: 16px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .chip-row {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
+      flex-wrap: wrap;
     }
 
     .chip-label {
@@ -119,9 +127,9 @@
     .chip {
       border-radius: 999px;
       border: 1px solid #d0d7e5;
-      padding: 4px 12px;
+      padding: 3px 10px;
       background: #ffffff;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       color: #333;
       transition: all 0.15s ease;
@@ -142,13 +150,39 @@
 <body>
   <div id="map"></div>
 
-  <!-- チップ型フィルター（複数選択対応） -->
+  <!-- フィルタパネル：坪単価 / 徒歩 / 行政区 -->
   <div id="chip-filter">
-    <span class="chip-label">坪単価</span>
-    <button class="chip chip-active" data-filter="all">全</button>
-    <button class="chip" data-filter="200">〜200</button>
-    <button class="chip" data-filter="201-300">201〜300</button>
-    <button class="chip" data-filter="301">301〜</button>
+    <!-- 坪単価 -->
+    <div class="chip-row" id="chip-row-tsubo">
+      <span class="chip-label">坪単価</span>
+      <button class="chip chip-active" data-group="tsubo" data-filter="all">全</button>
+      <button class="chip" data-group="tsubo" data-filter="200">〜200</button>
+      <button class="chip" data-group="tsubo" data-filter="201-300">201〜300</button>
+      <button class="chip" data-group="tsubo" data-filter="301">301〜</button>
+    </div>
+    <!-- 徒歩分数 -->
+    <div class="chip-row" id="chip-row-walk">
+      <span class="chip-label">徒歩</span>
+      <button class="chip chip-active" data-group="walk" data-filter="all">全</button>
+      <button class="chip" data-group="walk" data-filter="0-5">〜5分</button>
+      <button class="chip" data-group="walk" data-filter="6-10">6〜10分</button>
+      <button class="chip" data-group="walk" data-filter="11-15">11〜15分</button>
+      <button class="chip" data-group="walk" data-filter="16+">16分以上</button>
+    </div>
+    <!-- 行政区 -->
+    <div class="chip-row" id="chip-row-ward">
+      <span class="chip-label">行政区</span>
+      <button class="chip chip-active" data-group="ward" data-filter="all">全</button>
+      <button class="chip" data-group="ward" data-filter="中央区">中央区</button>
+      <button class="chip" data-group="ward" data-filter="博多区">博多区</button>
+      <button class="chip" data-group="ward" data-filter="南区">南区</button>
+      <button class="chip" data-group="ward" data-filter="城南区">城南区</button>
+      <button class="chip" data-group="ward" data-filter="早良区">早良区</button>
+      <button class="chip" data-group="ward" data-filter="西区">西区</button>
+      <button class="chip" data-group="ward" data-filter="東区">東区</button>
+      <button class="chip" data-group="ward" data-filter="春日市">春日市</button>
+      <button class="chip" data-group="ward" data-filter="大野城市">大野城市</button>
+    </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -193,6 +227,7 @@
               ${p.developer ? `<div>${p.developer}</div>` : ""}
               ${p.sale ? `<div>販売：${p.sale}</div>` : ""}
               ${p.completion ? `<div>竣工：${p.completion}</div>` : ""}
+              ${p.completion ? `<div>最寄駅まで徒歩：${p.walk}</div>` : ""}
             </div>
           </div>
         `;
@@ -260,20 +295,19 @@
       return patterns[index % patterns.length];
     }
 
-    /* ========= 坪単価フィルタ（複数選択） ========= */
-    // 例: ["all"] or ["200","301"] など
-    let activeFilters = ["all"];
+    /* ========= フィルタ取得 ========= */
+    function getActiveFilters(group) {
+      const chips = document.querySelectorAll(`.chip[data-group="${group}"].chip-active`);
+      const values = Array.from(chips).map(c => c.dataset.filter);
+      if (values.length === 0 || values.includes("all")) return ["all"];
+      return values;
+    }
 
+    /* ========= 各軸のマッチ判定 ========= */
     function matchTsuboFilter(p, filters) {
-      // "all" が含まれている、またはフィルターが空なら全件表示
-      if (!filters || filters.length === 0 || filters.includes("all")) {
-        return true;
-      }
-
+      if (!filters || filters.includes("all")) return true;
       const v = parseTsuboValue(p.tsubo);
       if (v === null || Number.isNaN(v)) return false;
-
-      // フィルタ配列のいずれかにマッチしたら表示（OR 条件）
       for (const f of filters) {
         if (f === "200" && v <= 200) return true;
         if (f === "201-300" && v >= 201 && v <= 300) return true;
@@ -281,17 +315,51 @@
       }
       return false;
     }
+// "7分" や "約12分" などから数値だけ取り出して分数にする
+function parseWalkMinutes(walk) {
+  if (walk === undefined || walk === null) return null;
+  const m = String(walk).match(/(\d+)/); // 最初の数字だけ拾う
+  return m ? parseInt(m[1], 10) : null;  // 数字が無ければ null
+}
+
+    function matchWalkFilter(p, filters) {
+  if (!filters || filters.includes("all")) return true;
+
+  const v = parseWalkMinutes(p.walk);  // ← 文字列から分数を取り出す
+  if (v === null || Number.isNaN(v)) return false;
+
+  for (const f of filters) {
+    if (f === "0-5"   && v <= 5) return true;
+    if (f === "6-10"  && v >= 6  && v <= 10) return true;
+    if (f === "11-15" && v >= 11 && v <= 15) return true;
+    if (f === "16+"   && v >= 16) return true;
+  }
+  return false;
+}
+
+
+    function matchWardFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+      const w = p.ward;
+      if (!w) return false;
+      return filters.includes(w);
+    }
 
     /* ========= プロット描画 ========= */
     function plotAll() {
       clearRendered();
       const mode = getModeFromZoom();
-      const filters = activeFilters;
+
+      const tsuboFilters = getActiveFilters("tsubo");
+      const walkFilters  = getActiveFilters("walk");
+      const wardFilters  = getActiveFilters("ward");
 
       properties.forEach((p, index) => {
-        // フィルタ条件に合わないものは非表示
-        if (!matchTsuboFilter(p, filters)) return;
         if (!p.lat || !p.lng) return;
+
+        if (!matchTsuboFilter(p, tsuboFilters)) return;
+        if (!matchWalkFilter(p, walkFilters)) return;
+        if (!matchWardFilter(p, wardFilters)) return;
 
         const base = [p.lat, p.lng];
 
@@ -336,49 +404,38 @@
     map.on("zoomend", plotAll);
 
     // ==========================
-    //   チップクリックイベント（複数選択）
+    //   チップクリックイベント
     // ==========================
     document.querySelectorAll("#chip-filter .chip").forEach(btn => {
       btn.addEventListener("click", () => {
-        const filter = btn.dataset.filter;
+        const group = btn.dataset.group;
+        const value = btn.dataset.filter;
+        const chips = document.querySelectorAll(`.chip[data-group="${group}"]`);
 
-        if (filter === "all") {
-          // ALL を押したら他を全部 OFF、ALL だけ ON
-          activeFilters = ["all"];
-          document.querySelectorAll("#chip-filter .chip").forEach(c => {
+        if (value === "all") {
+          // 「全」を押したらそのグループは全件表示に戻す
+          chips.forEach(c => {
             c.classList.toggle("chip-active", c.dataset.filter === "all");
           });
         } else {
-          // 数値レンジチップのトグル
-          const idx = activeFilters.indexOf(filter);
+          // 個別チップのトグル
+          btn.classList.toggle("chip-active");
 
-          // まず "all" は無効化
-          activeFilters = activeFilters.filter(f => f !== "all");
+          const hasNonAllActive = Array.from(chips).some(c =>
+            c.dataset.filter !== "all" && c.classList.contains("chip-active")
+          );
+          const allChip = Array.from(chips).find(c => c.dataset.filter === "all");
 
-          if (idx === -1) {
-            // 今 OFF → ON にする
-            activeFilters.push(filter);
-            btn.classList.add("chip-active");
+          if (hasNonAllActive) {
+            if (allChip) allChip.classList.remove("chip-active");
           } else {
-            // 今 ON → OFF にする
-            activeFilters.splice(idx, 1);
-            btn.classList.remove("chip-active");
-          }
-
-          // どれも選ばれていない場合は ALL に戻す
-          if (activeFilters.length === 0) {
-            activeFilters = ["all"];
-            document.querySelectorAll("#chip-filter .chip").forEach(c => {
+            // 1つも選ばれていなければ「全」を自動ON
+            chips.forEach(c => {
               c.classList.toggle("chip-active", c.dataset.filter === "all");
             });
-          } else {
-            // ALL ボタンだけ OFF にする
-            const allBtn = document.querySelector('#chip-filter .chip[data-filter="all"]');
-            if (allBtn) allBtn.classList.remove("chip-active");
           }
         }
 
-        // 地図を再描画
         plotAll();
       });
     });
