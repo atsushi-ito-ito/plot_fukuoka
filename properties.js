@@ -205,10 +205,10 @@ const properties = [
   },
   {
     name: "フリーディア草香江1丁目",
-    lat: 33.5807932,
-    lng: 130.3718922,
-    tsubo: "@438",
-    units: "総戸数_未定",
+    lat: 33.5808079,
+    lng: 130.3723329,
+    tsubo: "不明",
+    units: "15戸",
     developer: "（東宝住宅）",
     sale: "未定",
     completion: "未定",
@@ -1018,5 +1018,17 @@ const properties = [
     completion: "2026/12",
     walk: "5分",          // ← 最寄り駅まで徒歩7分
     ward: "東区",     // ← 行政区
+  },
+  {
+    name: "フリーディア大濠公園レジデンス",
+    lat: 33.6153075,
+    lng: 130.4167237,
+    tsubo: null,
+    units: "11戸",
+    developer: "（福岡知行）",
+    sale: "不明",
+    completion: "2026/07",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
   },
 ];
