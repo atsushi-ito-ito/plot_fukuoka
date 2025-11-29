@@ -27,7 +27,7 @@ const properties = [
     name: "家庭裁判所跡地PJ",
     lat: 33.5888106,
     lng: 130.3830918,
-    tsubo: "@800~1000",
+    tsubo: "@1000~",
     units: "225戸",
     developer: "（野村不動産/東京建物/西日本鉄道/九電不動産）",
     sale: "未定",
