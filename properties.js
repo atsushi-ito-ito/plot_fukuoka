@@ -96,15 +96,15 @@ const properties = [
     ward: "中央区",     // ← 行政区
   },
   {
-    name: "荒戸PJ",
+    name: "パークホームズ大濠ミッド",
     lat: 33.5927422,
     lng: 130.3747022,
     tsubo: null,
     units: "104戸",
     developer: "（三井不動産レジデンシャル）",
     sale: "未定",
-    completion: "未定",
-    walk: "不明",          // ← 最寄り駅まで徒歩7分
+    completion: "2027/09",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
   },
   {
@@ -312,16 +312,16 @@ const properties = [
     ward: "城南区",     // ← 行政区
   },
   {
-    name: "サンパーク荒江PJ",
-    lat: 33.572521,
-    lng: 130.3564412,
+    name: "サンパーク西新南レジデンス",
+    lat: 33.5721989,
+    lng: 130.3551823,
     tsubo: null,
-    units: "32戸",
+    units: "38戸",
     developer: "（大英産業）",
-    sale: "未定",
-    completion: "未定",
-    walk: "不明",          // ← 最寄り駅まで徒歩7分
-    ward: "城南区",     // ← 行政区
+    sale: "2026/02",
+    completion: "2027/06",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
   },
   {
     name: "大濠PJ",
@@ -1030,5 +1030,149 @@ const properties = [
     completion: "2026/07",
     walk: "10分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
+  },
+  {
+    name: "ジェイグラン大濠公園",
+    lat: 33.5909016,
+    lng: 130.3754832,
+    tsubo: null,
+    units: "39戸",
+    developer: "（JR西日本不動産開発）",
+    sale: "不明",
+    completion: "2028/02",
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
+  },
+  {
+    name: "モントーレ室見リバーサイド",
+    lat: 33.5773324,
+    lng: 130.3329819,
+    tsubo: null,
+    units: "23戸",
+    developer: "（西武ハウス）",
+    sale: "不明",
+    completion: "2027/01",
+    walk: "6分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
+  },
+  {
+    name: "グランフォーレ白木原プロジェクト",
+    lat: 33.533498,
+    lng: 130.483512,
+    tsubo: null,
+    units: "36戸",
+    developer: "（コーセーアールイー）",
+    sale: "不明",
+    completion: "2026/12",
+    walk: "9分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
+  },
+  {
+    name: "アルファステイツ博多サウス",
+    lat: 33.5746111,
+    lng: 130.44375,
+    tsubo: null,
+    units: "63戸",
+    developer: "（穴吹興産）",
+    sale: "2026/02",
+    completion: "2027/05",
+    walk: "17分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
+  },
+  {
+    name: "箱崎ネクストシティプロジェクト",
+    lat: 33.6382669,
+    lng: 130.4220593,
+    tsubo: null,
+    units: "65戸",
+    developer: "（プレサンスコーポレーション）",
+    sale: "不明",
+    completion: "2027/05",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "東区",     // ← 行政区
+  },
+  {
+    name: "グラウンディ大濠",
+    lat: 33.583837,
+    lng: 130.3749807,
+    tsubo: null,
+    units: "10戸",
+    developer: "（九電不動産）",
+    sale: "不明",
+    completion: "2028/03",
+    walk: "7分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
+  },
+  {
+    name: "MJR白木原",
+    lat: 33.5263429,
+    lng: 130.4855421,
+    tsubo: null,
+    units: "81戸",
+    developer: "（九州旅客鉄道）",
+    sale: "2026/03",
+    completion: "2028/03",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "大野城市",     // ← 行政区
+  },
+  {
+    name: "グランドパレス春日宝町",
+    lat: 33.535435,
+    lng: 130.4588157,
+    tsubo: null,
+    units: "28戸",
+    developer: "（第一交通産業）",
+    sale: "2026/02",
+    completion: "2027/02",
+    walk: "14分",          // ← 最寄り駅まで徒歩7分
+    ward: "春日市",     // ← 行政区
+  },
+  {
+    name: "クラブスタイル大橋レーヴ",
+    lat: 33.5536095,
+    lng: 130.43148,
+    tsubo: null,
+    units: "45戸",
+    developer: "（アライアンス）",
+    sale: "2025/12",
+    completion: "2027/02",
+    walk: "11分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
+  },
+  {
+    name: "オーヴィジョン室見一丁目",
+    lat: 33.58197,
+    lng: 130.342302,
+    tsubo: null,
+    units: "19戸",
+    developer: "（エストラスト）",
+    sale: "2026/02",
+    completion: "2027/01",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
+  },
+  {
+    name: "イノバス博多呉服",
+    lat: 33.600787,
+    lng: 130.4071793,
+    tsubo: null,
+    units: "20戸",
+    developer: "（オープンハウス）",
+    sale: "2025/12",
+    completion: "2027/08",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
+  },
+  {
+    name: "デュレジア大濠サウスサイド",
+    lat: 33.5762568,
+    lng: 130.3720523,
+    tsubo: null,
+    units: "29戸",
+    developer: "（LANDIC）",
+    sale: "2027/07",
+    completion: "2026/04",
+    walk: "4分",          // ← 最寄り駅まで徒歩7分
+    ward: "城南区",     // ← 行政区
   },
 ];
