@@ -39,7 +39,7 @@
     .property-card-full {
       padding: 8px 10px;
       min-width: 180px;
-      max-width: 220px;
+      max-width: 240px;
       font-size: 11px;
       line-height: 1.4;
       display: flex;
@@ -70,12 +70,12 @@
       margin-top: 2px;
     }
 
-    /* 広域（坪単価のみカード） */
+    /* 広域（坪単価→70㎡換算カード） */
     .property-card-compact {
       padding: 4px 10px;
-      min-width: 70px;
-      max-width: 120px;
-      font-size: 12px;
+      min-width: 90px;
+      max-width: 150px;
+      font-size: 11px;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
@@ -150,7 +150,7 @@
 <body>
   <div id="map"></div>
 
-  <!-- フィルタパネル：坪単価 / 徒歩 / 行政区 -->
+  <!-- フィルタパネル：坪単価 / 徒歩 / 行政区 / 価格 -->
   <div id="chip-filter">
     <!-- 坪単価 -->
     <div class="chip-row" id="chip-row-tsubo">
@@ -183,6 +183,18 @@
       <button class="chip" data-group="ward" data-filter="春日市">春日市</button>
       <button class="chip" data-group="ward" data-filter="大野城市">大野城市</button>
     </div>
+    <!-- 価格（70㎡換算ベース） -->
+    <div class="chip-row" id="chip-row-price">
+      <span class="chip-label">価格</span>
+      <button class="chip chip-active" data-group="price" data-filter="all">全</button>
+      <button class="chip" data-group="price" data-filter="0-5000">〜5,000</button>
+      <button class="chip" data-group="price" data-filter="0-6000">〜6,000</button>
+      <button class="chip" data-group="price" data-filter="0-7000">〜7,000</button>
+      <button class="chip" data-group="price" data-filter="0-8000">〜8,000</button>
+      <button class="chip" data-group="price" data-filter="0-9000">〜9,000</button>
+      <button class="chip" data-group="price" data-filter="0-10000">〜10,000</button>
+      <button class="chip" data-group="price" data-filter="10000-">10,000〜</button>
+    </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -212,9 +224,30 @@
       return "#ef4444";                // 301以上：赤
     }
 
+    // 70㎡換算の価格（万円）ラベルを作る（表示用）
+    function get70mPriceLabel(tsubo) {
+      const v = parseTsuboValue(tsubo);  // 坪単価
+      if (v === null || Number.isNaN(v)) return "";
+
+      const tsuboFor70 = 21.175;                 // 70㎡ ≒ 21.175坪
+      const priceMan = Math.round(v * tsuboFor70); // 万円単位で四捨五入
+      const formatted = priceMan.toLocaleString("ja-JP");
+
+      return `約${formatted}万円`;
+    }
+
+    // 70㎡換算価格（万円）を数値で返す（絞り込み用）
+    function get70mPriceValue(tsubo) {
+      const v = parseTsuboValue(tsubo);
+      if (v === null || Number.isNaN(v)) return null;
+      const tsuboFor70 = 21.175;
+      return Math.round(v * tsuboFor70);  // 例えば @300 → 6353
+    }
+
     /* ========= カードHTML生成 ========= */
     function createCardHTML(p, mode) {
-      const tsuboColor = getTsuboColor(p.tsubo);
+      const tsuboColor   = getTsuboColor(p.tsubo);
+      const price70Label = get70mPriceLabel(p.tsubo);
 
       if (mode === "full") {
         return `
@@ -223,16 +256,21 @@
             <div class="property-card-inner">
               <div class="property-card-title">${p.name}</div>
               ${p.tsubo ? `<div class="highlight">${p.tsubo}</div>` : ""}
+              ${price70Label ? `<div>${price70Label}</div>` : ""}
               ${p.units ? `<div>${p.units}</div>` : ""}
               ${p.developer ? `<div>${p.developer}</div>` : ""}
               ${p.sale ? `<div>販売：${p.sale}</div>` : ""}
               ${p.completion ? `<div>竣工：${p.completion}</div>` : ""}
-              ${p.completion ? `<div>最寄駅まで徒歩：${p.walk}</div>` : ""}
+              ${p.walk ? `<div>最寄駅まで徒歩：${p.walk}</div>` : ""}
             </div>
           </div>
         `;
       } else {
-        const label = p.tsubo ? p.tsubo : "－";
+        // 広域カードは 70㎡換算金額を優先表示
+        const label = price70Label
+          ? price70Label
+          : (p.tsubo ? p.tsubo : "－");
+
         return `
           <div class="property-card property-card-compact">
             <div class="tsubo-bar-compact" style="background-color:${tsuboColor};"></div>
@@ -248,15 +286,15 @@
         return L.divIcon({
           className: "property-card-wrapper",
           html,
-          iconSize: [220, 90],
-          iconAnchor: [110, 100],
+          iconSize: [240, 100],
+          iconAnchor: [120, 110],
         });
       } else {
         return L.divIcon({
           className: "property-card-wrapper",
           html,
-          iconSize: [80, 34],
-          iconAnchor: [40, 38],
+          iconSize: [150, 40],
+          iconAnchor: [75, 44],
         });
       }
     }
@@ -315,28 +353,55 @@
       }
       return false;
     }
-// "7分" や "約12分" などから数値だけ取り出して分数にする
-function parseWalkMinutes(walk) {
-  if (walk === undefined || walk === null) return null;
-  const m = String(walk).match(/(\d+)/); // 最初の数字だけ拾う
-  return m ? parseInt(m[1], 10) : null;  // 数字が無ければ null
-}
+
+    function matchPriceFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+
+      const price = get70mPriceValue(p.tsubo);
+      if (price === null) return false;  // 坪単価不明は除外
+
+      for (const f of filters) {
+        if (f === "all") return true;
+
+        if (f.includes("-")) {
+          const [minStr, maxStr] = f.split("-");
+          const min = minStr ? parseInt(minStr, 10) : null;
+          const max = maxStr ? parseInt(maxStr, 10) : null;
+
+          if (min !== null && max !== null) {
+            if (price >= min && price <= max) return true;
+          } else if (min === null && max !== null) {
+            if (price <= max) return true;
+          } else if (min !== null && max === null) {
+            if (price >= min) return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    // "7分" や "約12分" などから数値だけ取り出して分数にする
+    function parseWalkMinutes(walk) {
+      if (walk === undefined || walk === null) return null;
+      const m = String(walk).match(/(\d+)/); // 最初の数字だけ拾う
+      return m ? parseInt(m[1], 10) : null;  // 数字が無ければ null
+    }
 
     function matchWalkFilter(p, filters) {
-  if (!filters || filters.includes("all")) return true;
+      if (!filters || filters.includes("all")) return true;
 
-  const v = parseWalkMinutes(p.walk);  // ← 文字列から分数を取り出す
-  if (v === null || Number.isNaN(v)) return false;
+      const v = parseWalkMinutes(p.walk);
+      if (v === null || Number.isNaN(v)) return false;
 
-  for (const f of filters) {
-    if (f === "0-5"   && v <= 5) return true;
-    if (f === "6-10"  && v >= 6  && v <= 10) return true;
-    if (f === "11-15" && v >= 11 && v <= 15) return true;
-    if (f === "16+"   && v >= 16) return true;
-  }
-  return false;
-}
-
+      for (const f of filters) {
+        if (f === "0-5"   && v <= 5) return true;
+        if (f === "6-10"  && v >= 6  && v <= 10) return true;
+        if (f === "11-15" && v >= 11 && v <= 15) return true;
+        if (f === "16+"   && v >= 16) return true;
+      }
+      return false;
+    }
 
     function matchWardFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
@@ -353,6 +418,7 @@ function parseWalkMinutes(walk) {
       const tsuboFilters = getActiveFilters("tsubo");
       const walkFilters  = getActiveFilters("walk");
       const wardFilters  = getActiveFilters("ward");
+      const priceFilters = getActiveFilters("price");
 
       properties.forEach((p, index) => {
         if (!p.lat || !p.lng) return;
@@ -360,6 +426,7 @@ function parseWalkMinutes(walk) {
         if (!matchTsuboFilter(p, tsuboFilters)) return;
         if (!matchWalkFilter(p, walkFilters)) return;
         if (!matchWardFilter(p, wardFilters)) return;
+        if (!matchPriceFilter(p, priceFilters)) return;
 
         const base = [p.lat, p.lng];
 
