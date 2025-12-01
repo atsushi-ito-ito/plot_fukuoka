@@ -313,8 +313,8 @@ const properties = [
   },
   {
     name: "サンパーク西新南レジデンス",
-    lat: 33.5721989,
-    lng: 130.3551823,
+    lat: 33.572551,
+    lng: 130.356757,
     tsubo: null,
     units: "38戸",
     developer: "（大英産業）",
