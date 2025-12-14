@@ -83,18 +83,7 @@ const properties = [
     walk: "8分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
   },
-  {
-    name: "大手門3丁目計画",
-    lat: 33.5921254,
-    lng: 130.3804906,
-    tsubo: null,
-    units: "39戸",
-    developer: "（JR西日本不動産開発/サンヨーホームズ）",
-    sale: "未定",
-    completion: "未定",
-    walk: "不明",          // ← 最寄り駅まで徒歩7分
-    ward: "中央区",     // ← 行政区
-  },
+
   {
     name: "パークホームズ大濠ミッド",
     lat: 33.5927422,
@@ -207,7 +196,7 @@ const properties = [
     name: "フリーディア草香江1丁目",
     lat: 33.5808079,
     lng: 130.3723329,
-    tsubo: "不明",
+    tsubo: null,
     units: "15戸",
     developer: "（東宝住宅）",
     sale: "未定",
@@ -411,7 +400,7 @@ const properties = [
     name: "ジェイグラン六本松レジデンス",
     lat: 33.5758323,
     lng: 130.3827844,
-    tsubo: null,
+    tsubo: "@308",
     units: "34戸",
     developer: "（JR西日本不動産開発）",
     sale: "2025/12",
@@ -429,18 +418,6 @@ const properties = [
     sale: "不明",
     completion: "不明",
     walk: "不明",          // ← 最寄り駅まで徒歩7分
-    ward: "中央区",     // ← 行政区
-  },
-  {
-    name: "ザ・パークハウス大濠翠景",
-    lat: 33.58132,
-    lng: 130.3741708,
-    tsubo: null,
-    units: "30戸",
-    developer: "（三菱地所レジデンス）",
-    sale: "2024/03",
-    completion: "2025/02",
-    walk: "7分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
   },
   {
@@ -680,7 +657,7 @@ const properties = [
     developer: "（タイヘイ）",
     sale: "2024/11",
     completion: "2026/08",
-    walk: "-",          // ← 最寄り駅まで徒歩7分
+    walk: "11分",          // ← 最寄り駅まで徒歩7分
     ward: "博多区",     // ← 行政区
   },
   {
@@ -747,7 +724,7 @@ const properties = [
     name: "サンパークシティ香椎",
     lat: 33.6656807,
     lng: 130.4411728,
-    tsubo: null,
+    tsubo: "@250",
     units: "90戸",
     developer: "（大英産業）",
     sale: "2025/04",
@@ -759,7 +736,7 @@ const properties = [
     name: "MJR千早ミッドスクエア",
     lat: 33.6548378,
     lng: 130.4398309,
-    tsubo: null,
+    tsubo: "@280",
     units: "532戸",
     developer: "（九州旅客鉄道/住友不動産/日鉄興和不動産/長谷工不動産）",
     sale: "2023/01",
@@ -1021,8 +998,8 @@ const properties = [
   },
   {
     name: "フリーディア大濠公園レジデンス",
-    lat: 33.6153075,
-    lng: 130.4167237,
+    lat: 33.580793,
+    lng: 130.371892,
     tsubo: null,
     units: "11戸",
     developer: "（福岡知行）",
@@ -1116,7 +1093,7 @@ const properties = [
     ward: "大野城市",     // ← 行政区
   },
   {
-    name: "グランドパレス春日宝町",
+    name: "グランドパレス春日静邸",
     lat: 33.535435,
     lng: 130.4588157,
     tsubo: null,
@@ -1174,5 +1151,29 @@ const properties = [
     completion: "2026/04",
     walk: "4分",          // ← 最寄り駅まで徒歩7分
     ward: "城南区",     // ← 行政区
+  },
+  {
+    name: "アーティックス原ヴェルソーレ",
+    lat: 33.5691119,
+    lng: 130.3424931,
+    tsubo: null,
+    units: "41戸",
+    developer: "（なかやしき）",
+    sale: "2026/02",
+    completion: "2027/10",
+    walk: "22分",          // ← 最寄り駅まで徒歩7分
+    ward: "早良区",     // ← 行政区
+  },
+  {
+    name: "サングレート博多エクセラス",
+    lat: 33.581314,
+    lng: 130.437264,
+    tsubo: null,
+    units: "42戸",
+    developer: "（タイヘイ）",
+    sale: "2026/01",
+    completion: "2027/07",
+    walk: "15分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
   },
 ];
