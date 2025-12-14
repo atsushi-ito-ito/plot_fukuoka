@@ -91,7 +91,7 @@ const properties = [
     tsubo: null,
     units: "104戸",
     developer: "（三井不動産レジデンシャル）",
-    sale: "未定",
+    sale: "2026/03",
     completion: "2027/09",
     walk: "7分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
@@ -194,8 +194,8 @@ const properties = [
   },
   {
     name: "フリーディア草香江1丁目",
-    lat: 33.5808079,
-    lng: 130.3723329,
+    lat: 33.5803729,
+    lng: 130.3722243,
     tsubo: null,
     units: "15戸",
     developer: "（東宝住宅）",
@@ -309,7 +309,7 @@ const properties = [
     developer: "（大英産業）",
     sale: "2026/02",
     completion: "2027/06",
-    walk: "-",          // ← 最寄り駅まで徒歩7分
+    walk: "17分",          // ← 最寄り駅まで徒歩7分
     ward: "早良区",     // ← 行政区
   },
   {
@@ -324,18 +324,7 @@ const properties = [
     walk: "不明",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
   },
-  {
-    name: "アクタス茶山グランミライ",
-    lat: 33.5688346,
-    lng: 130.3610873,
-    tsubo: null,
-    units: "41戸",
-    developer: "（クレ・コーポレーション）",
-    sale: "2024/10",
-    completion: "2025/07",
-    walk: "9分",          // ← 最寄り駅まで徒歩7分
-    ward: "城南区",     // ← 行政区
-  },
+  
   {
     name: "エンクレストガーデン福岡",
     lat: 33.5690947,
@@ -484,7 +473,7 @@ const properties = [
     name: "トラスト博多南駅レジデンス",
     lat: 33.5519912,
     lng: 130.4088829,
-    tsubo: null,
+    tsubo: "@210",
     units: "23戸",
     developer: "（トラスト不動産開発）",
     sale: "2024/06",
@@ -713,7 +702,7 @@ const properties = [
     lat: 33.6686519,
     lng: 130.4133948,
     tsubo: null,
-    units: "20戸",
+    units: "93戸",
     developer: "（積水ハウス/福岡商事/西部ガス都市開発）",
     sale: "2024/02",
     completion: "2025/01",
@@ -981,7 +970,7 @@ const properties = [
     developer: "（タイヘイ）",
     sale: "2024/03",
     completion: "2025/06",
-    walk: "-",          // ← 最寄り駅まで徒歩7分
+    walk: "21分",          // ← 最寄り駅まで徒歩7分
     ward: "博多区",     // ← 行政区
   },
   {
@@ -991,7 +980,7 @@ const properties = [
     tsubo: null,
     units: "24戸",
     developer: "（福岡知行）",
-    sale: "不明",
+    sale: "2025/11",
     completion: "2026/12",
     walk: "5分",          // ← 最寄り駅まで徒歩7分
     ward: "東区",     // ← 行政区
@@ -1003,7 +992,7 @@ const properties = [
     tsubo: null,
     units: "11戸",
     developer: "（福岡知行）",
-    sale: "不明",
+    sale: "2025/11",
     completion: "2026/07",
     walk: "10分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
@@ -1015,7 +1004,7 @@ const properties = [
     tsubo: null,
     units: "39戸",
     developer: "（JR西日本不動産開発）",
-    sale: "不明",
+    sale: "2026/04",
     completion: "2028/02",
     walk: "3分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
@@ -1039,7 +1028,7 @@ const properties = [
     tsubo: null,
     units: "36戸",
     developer: "（コーセーアールイー）",
-    sale: "不明",
+    sale: "2026/03",
     completion: "2026/12",
     walk: "9分",          // ← 最寄り駅まで徒歩7分
     ward: "大野城市",     // ← 行政区
@@ -1063,7 +1052,7 @@ const properties = [
     tsubo: null,
     units: "65戸",
     developer: "（プレサンスコーポレーション）",
-    sale: "不明",
+    sale: "2026/01",
     completion: "2027/05",
     walk: "10分",          // ← 最寄り駅まで徒歩7分
     ward: "東区",     // ← 行政区
@@ -1075,7 +1064,7 @@ const properties = [
     tsubo: null,
     units: "10戸",
     developer: "（九電不動産）",
-    sale: "不明",
+    sale: "2026/04",
     completion: "2028/03",
     walk: "7分",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
