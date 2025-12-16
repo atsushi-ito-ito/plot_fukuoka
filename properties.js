@@ -1037,7 +1037,7 @@ const properties = [
     name: "アルファステイツ博多サウス",
     lat: 33.5746111,
     lng: 130.44375,
-    tsubo: null,
+    tsubo: "@240",
     units: "63戸",
     developer: "（穴吹興産）",
     sale: "2026/02",
