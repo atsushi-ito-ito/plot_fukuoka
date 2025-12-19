@@ -75,7 +75,7 @@ const properties = [
     name: "イノバス大濠公園",
     lat: 33.5942644,
     lng: 130.3727228,
-    tsubo: "@390～450",
+    tsubo: "@390",
     units: "25戸",
     developer: "（オープンハウス･ディベロップメント）",
     sale: "2025/03",
