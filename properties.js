@@ -204,18 +204,7 @@ const properties = [
     walk: "不明",          // ← 最寄り駅まで徒歩7分
     ward: "中央区",     // ← 行政区
   },
-  {
-    name: "大濠1丁目PJ",
-    lat: 33.5833641,
-    lng: 130.3736991,
-    tsubo: "@700",
-    units: "総戸数_未定",
-    developer: "（九電不動産）",
-    sale: "未定",
-    completion: "未定",
-    walk: "不明",          // ← 最寄り駅まで徒歩7分
-    ward: "中央区",     // ← 行政区
-  },
+  
   {
     name: "ウエリス赤坂BAYSIDE",
     lat: 33.5927395,
