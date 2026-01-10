@@ -1166,6 +1166,18 @@ const properties = [
     walk: "15分",          // ← 最寄り駅まで徒歩7分
     ward: "博多区",     // ← 行政区
   },
+  {
+    name: "ASSOCIA 博多翠景（仮称）",
+    lat: 33.5808866,
+    lng: 130.4359716,
+    tsubo: null,
+    units: "115戸",
+    developer: "（LANDIC）",
+    sale: "2026/06",
+    completion: "2027/12",
+    walk: "-",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
+  },
 ];
 
 /*
