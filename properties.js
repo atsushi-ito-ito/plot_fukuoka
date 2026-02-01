@@ -1190,18 +1190,6 @@ const properties = [
     walk: "-",          // ← 最寄り駅まで徒歩7分
     ward: "博多区",     // ← 行政区
   },
-  {
-    name: "城西１丁目計画",
-    lat: 33.5817728,
-    lng: 130.3625435,
-    tsubo: "@450",
-    units: "80戸",
-    developer: "（JR九州・関電不動産）",
-    sale: "不明",
-    completion: "不明",
-    walk: "-",          // ← 最寄り駅まで徒歩7分
-    ward: "早良区",     // ← 行政区
-  },
 ];
 
 /*
@@ -1214,6 +1202,8 @@ const properties = [
 
 アソシア箱崎　@300
 
+cd ~/Desktop/plot_fukuoka
+ls
 git commit -m "Update UI"
 git remote -v
 git push origin main
