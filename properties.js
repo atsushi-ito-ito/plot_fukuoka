@@ -1187,7 +1187,55 @@ const properties = [
     developer: "（アライアンス）",
     sale: "不明",
     completion: "不明",
-    walk: "-",          // ← 最寄り駅まで徒歩7分
+    walk: "3分",          // ← 最寄り駅まで徒歩7分
+    ward: "博多区",     // ← 行政区
+  },
+  {
+    name: "警固プロジェクト",
+    lat: 33.5782707,
+    lng: 130.3877532,
+    tsubo: null,
+    units: "20戸",
+    developer: "（エストラスト）",
+    sale: "不明",
+    completion: "不明",
+    walk: "5分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
+  },
+  {
+    name: "大手門PJ",
+    lat: 33.5894776,
+    lng: 130.3806744,
+    tsubo: null,
+    units: "52戸",
+    developer: "（関電不動産／住友不動産）",
+    sale: "不明",
+    completion: "不明",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
+    ward: "中央区",     // ← 行政区
+  },
+  {
+    name: "ファーネスト横手",
+    lat: 不明,
+    lng: 不明,
+    tsubo: null,
+    units: "117戸",
+    developer: "（ファミリー）",
+    sale: "不明",
+    completion: "不明",
+    walk: "10分",          // ← 最寄り駅まで徒歩7分
+    ward: "南区",     // ← 行政区
+  },
+  {
+    name: "東比恵駅前PJ",
+    lat: 33.5894611,
+    lng: 130.4279994,
+    tsubo: null,
+    units: "50戸",
+    developer: "（大和ハウス工業）",
+    sale: "不明",
+    completion: "不明",
+    walk: "2分",          // ← 最寄り駅まで徒歩7分
     ward: "博多区",     // ← 行政区
   },
 ];
