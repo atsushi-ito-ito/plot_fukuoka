@@ -87,7 +87,17 @@ module.exports = async (req, res) => {
     res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=300");
     res.status(200).json(data);
   } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Failed to load properties from Sheets." });
-  }
+  console.error("Sheets API error:", e);
+
+  const detail =
+    e?.response?.data?.error?.message ||
+    e?.message ||
+    JSON.stringify(e);
+
+  res.status(500).json({
+    error: "Failed to load properties from Sheets",
+    detail
+  });
+}
+
 };
