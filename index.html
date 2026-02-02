@@ -31,10 +31,6 @@
       border: none !important;
     }
 
-    /* ===============================
-       物件カード（既存デザイン）
-    =============================== */
-
     .property-card {
       background: #ffffff;
       border-radius: 10px;
@@ -43,7 +39,6 @@
       box-sizing: border-box;
     }
 
-    /* 狭域（詳細カード） */
     .property-card-full {
       padding: 8px 10px;
       min-width: 180px;
@@ -64,12 +59,11 @@
       margin-bottom: 6px;
     }
     .highlight {
-      color: #f97316; /* 坪単価の文字色は常にオレンジ */
+      color: #f97316;
       font-weight: 700;
       font-size: 13px;
     }
 
-    /* 坪単価ランク用バー（フルカード） */
     .tsubo-bar {
       width: 4px;
       height: 52px;
@@ -78,7 +72,6 @@
       margin-top: 2px;
     }
 
-    /* 広域（70㎡換算金額カード） */
     .property-card-compact {
       padding: 4px 10px;
       min-width: 90px;
@@ -91,7 +84,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #f97316; /* 文字色オレンジ固定 */
+      color: #f97316;
     }
     .tsubo-bar-compact {
       width: 4px;
@@ -99,10 +92,6 @@
       border-radius: 999px;
       flex-shrink: 0;
     }
-
-    /* ===================================
-       絞り込みパネル ＋ トグルボタン
-    =================================== */
 
     .filter-toggle {
       position: absolute;
@@ -237,16 +226,6 @@
       border-color: #020617;
     }
 
-    /* 物件一覧用（今は枠のみ） */
-    .property-list-placeholder {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      color: #9ca3af;
-      font-size: 13px;
-    }
-
-    /* 少しだけ PC で横幅を抑える */
     @media (min-width: 768px) {
       #filter-panel {
         max-width: 420px;
@@ -259,13 +238,9 @@
 <body>
   <div id="map"></div>
 
-  <!-- 絞り込みボタン -->
   <button id="filter-toggle" class="filter-toggle">絞り込み</button>
-
-  <!-- オーバーレイ -->
   <div id="filter-overlay"></div>
 
-  <!-- 絞り込みパネル -->
   <aside id="filter-panel">
     <div class="filter-panel-inner">
       <div class="filter-header">
@@ -324,8 +299,6 @@
         </div>
       </section>
 
-      
-
       <!-- 価格（70㎡換算） -->
       <section class="filter-section">
         <h2 class="filter-section-title">価格（70㎡換算）</h2>
@@ -341,20 +314,41 @@
         </div>
       </section>
 
-      
     </div>
   </aside>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- 物件リスト -->
-  <script src="properties.js"></script>
-
   <script>
+    // ==========================
+    //  Sheets(API)から物件データを取得
+    // ==========================
+    let properties = [];
+
+    async function loadPropertiesFromApi() {
+      const res = await fetch("/api/properties", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch /api/properties");
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    }
+
+    // セルに "..." が入っている場合の見た目対策（任意）
+    function stripOuterQuotes(v) {
+      const s = String(v ?? "");
+      return s.replace(/^"+|"+$/g, "");
+    }
+
+    /* ========= 地図初期化 ========= */
+    const map = L.map("map").setView([33.59, 130.40], 12);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(map);
+
     /* ========= Zoom モード判定 ========= */
     function getModeFromZoom() {
       const z = map.getZoom();
-      return z >= 15 ? "full" : "compact"; // 狭域/広域
+      return z >= 15 ? "full" : "compact";
     }
 
     /* ========= 坪単価の数値・色判定 ========= */
@@ -366,25 +360,21 @@
 
     function getTsuboColor(tsubo) {
       const v = parseTsuboValue(tsubo);
-      if (v === null || Number.isNaN(v)) return "#6b7280"; // 不明：グレー
-      if (v <= 200) return "#22c55e";  // 200以下：緑
-      if (v <= 300) return "#f97316";  // 201〜300：オレンジ
-      return "#ef4444";                // 301以上：赤
+      if (v === null || Number.isNaN(v)) return "#6b7280";
+      if (v <= 200) return "#22c55e";
+      if (v <= 300) return "#f97316";
+      return "#ef4444";
     }
 
-    // 70㎡換算の価格（万円）ラベルを作る（表示用）
     function get70mPriceLabel(tsubo) {
-      const v = parseTsuboValue(tsubo);  // 坪単価
+      const v = parseTsuboValue(tsubo);
       if (v === null || Number.isNaN(v)) return "";
-
-      const tsuboFor70 = 21.175;                 // 70㎡ ≒ 21.175坪
-      const priceMan = Math.round(v * tsuboFor70); // 万円単位で四捨五入
+      const tsuboFor70 = 21.175;
+      const priceMan = Math.round(v * tsuboFor70);
       const formatted = priceMan.toLocaleString("ja-JP");
-
       return `約${formatted}万円`;
     }
 
-    // 70㎡換算価格（万円）を数値で返す（絞り込み用）
     function get70mPriceValue(tsubo) {
       const v = parseTsuboValue(tsubo);
       if (v === null || Number.isNaN(v)) return null;
@@ -401,29 +391,36 @@
 
     /* ========= カードHTML生成 ========= */
     function createCardHTML(p, mode) {
-      const tsuboColor   = getTsuboColor(p.tsubo);
-      const price70Label = get70mPriceLabel(p.tsubo);
+      // 見た目用に " を外す（任意）
+      const name = stripOuterQuotes(p.name);
+      const tsubo = stripOuterQuotes(p.tsubo);
+      const units = stripOuterQuotes(p.units);
+      const developer = stripOuterQuotes(p.developer);
+      const sale = stripOuterQuotes(p.sale);
+      const completion = stripOuterQuotes(p.completion);
+      const walk = stripOuterQuotes(p.walk);
+
+      const tsuboColor   = getTsuboColor(tsubo);
+      const price70Label = get70mPriceLabel(tsubo);
 
       if (mode === "full") {
         return `
           <div class="property-card property-card-full">
             <div class="tsubo-bar" style="background-color:${tsuboColor};"></div>
             <div class="property-card-inner">
-              <div class="property-card-title">${p.name}</div>
-              ${p.tsubo ? `<div class="highlight">${p.tsubo}</div>` : ""}
+              <div class="property-card-title">${name}</div>
+              ${tsubo ? `<div class="highlight">${tsubo}</div>` : ""}
               ${price70Label ? `<div>${price70Label}</div>` : ""}
-              ${p.units ? `<div>${p.units}</div>` : ""}
-              ${p.developer ? `<div>${p.developer}</div>` : ""}
-              ${p.sale ? `<div>販売：${p.sale}</div>` : ""}
-              ${p.completion ? `<div>竣工：${p.completion}</div>` : ""}
-              ${p.walk ? `<div>最寄駅まで徒歩：${p.walk}</div>` : ""}
+              ${units ? `<div>${units}</div>` : ""}
+              ${developer ? `<div>${developer}</div>` : ""}
+              ${sale ? `<div>販売：${sale}</div>` : ""}
+              ${completion ? `<div>竣工：${completion}</div>` : ""}
+              ${walk ? `<div>最寄駅まで徒歩：${walk}</div>` : ""}
             </div>
           </div>
         `;
       } else {
-        const label = price70Label
-          ? price70Label
-          : (p.tsubo ? p.tsubo : "－");
+        const label = price70Label ? price70Label : (tsubo ? tsubo : "－");
 
         return `
           <div class="property-card property-card-compact">
@@ -453,13 +450,6 @@
       }
     }
 
-    /* ========= 地図初期化 ========= */
-    const map = L.map("map").setView([33.59, 130.40], 12);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-    }).addTo(map);
-
     /* ========= プロット管理 ========= */
     let rendered = [];
 
@@ -472,11 +462,8 @@
       rendered = [];
     }
 
-    // シンプルなオフセットパターン（重なり回避ロジックは無し）
     function getCardOffset(index, mode) {
-      if (mode === "compact") {
-        return { lat: 0, lng: 0 }; // 広域は点の近く
-      }
+      if (mode === "compact") return { lat: 0, lng: 0 };
       const patterns = [
         { lat: 0.0020, lng: 0 },
         { lat: 0.0016, lng: 0.0016 },
@@ -496,8 +483,6 @@
     }
 
     /* ========= 各軸のマッチ判定 ========= */
-
-    // 坪単価レンジ（画像のレンジに合わせたロジック）
     function matchTsuboFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
 
@@ -511,11 +496,11 @@
         }
         if (isUnknown) continue;
 
-        if (f === "0-200"   && v < 200) return true;               // 〜200
-        if (f === "200-250" && v >= 200 && v < 250) return true;   // 200〜250
-        if (f === "250-300" && v >= 250 && v < 300) return true;   // 250〜300
-        if (f === "300-350" && v >= 300 && v < 350) return true;   // 300〜350
-        if (f === "350+"    && v >= 350) return true;              // 350〜
+        if (f === "0-200"   && v < 200) return true;
+        if (f === "200-250" && v >= 200 && v < 250) return true;
+        if (f === "250-300" && v >= 250 && v < 300) return true;
+        if (f === "300-350" && v >= 300 && v < 350) return true;
+        if (f === "350+"    && v >= 350) return true;
       }
       return false;
     }
@@ -524,7 +509,7 @@
       if (!filters || filters.includes("all")) return true;
 
       const price = get70mPriceValue(p.tsubo);
-      if (price === null) return false;  // 坪単価不明は除外
+      if (price === null) return false;
 
       for (const f of filters) {
         if (f === "all") return true;
@@ -546,7 +531,6 @@
       return false;
     }
 
-    // "7分" や "約12分" などから数値だけ取り出して分数にする
     function parseWalkMinutes(walk) {
       if (walk === undefined || walk === null) return null;
       const m = String(walk).match(/(\d+)/);
@@ -568,14 +552,6 @@
       return false;
     }
 
-    function matchWardFilter(p, filters) {
-      if (!filters || filters.includes("all")) return true;
-      const w = p.ward;
-      if (!w) return false;
-      return filters.includes(w);
-    }
-
-    // エリア（現状は ward と同じ値を見て判定）
     function matchAreaFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
       const w = p.ward;
@@ -583,7 +559,6 @@
       return filters.includes(w);
     }
 
-    // 戸数規模
     function matchUnitsFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
       const v = parseUnitsCount(p.units);
@@ -598,7 +573,11 @@
     }
 
     /* ========= プロット描画 ========= */
+    let initialized = false;
+
     function plotAll() {
+      if (!Array.isArray(properties)) return;
+
       clearRendered();
       const mode = getModeFromZoom();
 
@@ -609,7 +588,8 @@
       const unitsFilters = getActiveFilters("units");
 
       properties.forEach((p, index) => {
-        if (!p.lat || !p.lng) return;
+        // ✅ null/undefined を弾く（0判定じゃない）
+        if (p.lat == null || p.lng == null) return;
 
         if (!matchAreaFilter(p, areaFilters)) return;
         if (!matchTsuboFilter(p, tsuboFilters)) return;
@@ -619,7 +599,6 @@
 
         const base = [p.lat, p.lng];
 
-        // 点（青）
         const dot = L.circleMarker(base, {
           radius: 4,
           color: "#2563eb",
@@ -628,17 +607,14 @@
           fillOpacity: 1,
         }).addTo(map);
 
-        // カード位置（固定オフセット）
         const offset = getCardOffset(index, mode);
         const cardPos = [p.lat + offset.lat, p.lng + offset.lng];
 
-        // カード（狭域のみドラッグ可）
         const cardMarker = L.marker(cardPos, {
           icon: createCardIcon(p, mode),
           draggable: mode === "full",
         }).addTo(map);
 
-        // 引出線（青）
         const line = L.polyline([base, cardPos], {
           color: "#2563eb",
           weight: 2.5,
@@ -655,7 +631,7 @@
       });
     }
 
-    plotAll();
+    // zoom時は、ロード前でも呼ばれるのでガードしつつ登録
     map.on("zoomend", plotAll);
 
     // ==========================
@@ -714,6 +690,19 @@
     filterToggle.addEventListener("click", openFilter);
     filterClose.addEventListener("click", closeFilter);
     filterOverlay.addEventListener("click", closeFilter);
+
+    // ==========================
+    //  初回ロード：API読み込み後に描画
+    // ==========================
+    (async () => {
+      try {
+        properties = await loadPropertiesFromApi();
+        plotAll();
+      } catch (e) {
+        console.error(e);
+        alert("物件データの読み込みに失敗しました。/api/properties を確認してください。");
+      }
+    })();
   </script>
 </body>
 </html>
