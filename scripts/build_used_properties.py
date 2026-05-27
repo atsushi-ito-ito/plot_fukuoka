@@ -194,6 +194,7 @@ def normalize_row(row, source_file, overrides=None):
         banchi_status = f"manual_override:{banchi_status}"
 
     walk = to_int(row.get("徒歩（分）"))
+    bus_walk = to_int(row.get("バス（分）"))
     price = to_int(row.get("価格"))
     area = to_number(row.get("建物専有面積"))
     management_fee = to_yen(row.get("管理費"))
@@ -230,6 +231,9 @@ def normalize_row(row, source_file, overrides=None):
         "station": clean(row.get("最寄駅")),
         "walkMinutes": walk,
         "walk": f"{walk}分" if walk is not None else "",
+        "busStop": clean(row.get("最寄バス停")),
+        "busWalkMinutes": bus_walk,
+        "busWalk": f"{bus_walk}分" if bus_walk is not None else "",
         "built": "".join(
             part for part in [clean(row.get("築年月（年）")), "/", clean(row.get("築年月（月）"))] if part
         ).strip("/"),

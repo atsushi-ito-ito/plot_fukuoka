@@ -679,8 +679,20 @@
       </section>
 
       <section class="filter-section mode-filter" data-property-mode="used" hidden>
-        <h2 class="filter-section-title">最寄り駅距離</h2>
+        <h2 class="filter-section-title">最寄り駅まで徒歩</h2>
         <select class="filter-select used-filter-select" id="used-walk-max">
+          <option value="">指定なし</option>
+          <option value="3">3分以内</option>
+          <option value="5">5分以内</option>
+          <option value="7">7分以内</option>
+          <option value="10">10分以内</option>
+          <option value="15">15分以内</option>
+        </select>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">最寄りバス停まで徒歩</h2>
+        <select class="filter-select used-filter-select" id="used-bus-walk-max">
           <option value="">指定なし</option>
           <option value="3">3分以内</option>
           <option value="5">5分以内</option>
@@ -847,6 +859,8 @@
         const layout = stripOuterQuotes(p.layout);
         const station = stripOuterQuotes(p.station);
         const walk = stripOuterQuotes(p.walk);
+        const busStop = stripOuterQuotes(p.busStop);
+        const busWalk = stripOuterQuotes(p.busWalk);
         const ward = stripOuterQuotes(p.ward);
         const address = stripOuterQuotes(p.address);
         const age = stripOuterQuotes(p.ageLabel);
@@ -864,7 +878,8 @@
                 ${priceLabel ? `<div class="highlight">${priceLabel}</div>` : ""}
                 ${areaLabel || layout ? `<div>${[areaLabel, layout].filter(Boolean).join(" / ")}</div>` : ""}
                 ${age || direction ? `<div>${[age, direction].filter(Boolean).join(" / ")}</div>` : ""}
-                ${station ? `<div>${station}${walk ? ` 徒歩${walk}` : ""}</div>` : ""}
+                ${station || walk ? `<div>最寄り駅まで徒歩：${[station, walk].filter(Boolean).join(" ")}</div>` : ""}
+                ${busStop || busWalk ? `<div>最寄りバス停まで徒歩：${[busStop, busWalk].filter(Boolean).join(" ")}</div>` : ""}
                 ${monthlyFee ? `<div>管理費+修繕積立金：${monthlyFee}</div>` : ""}
                 ${p.parkingAvailable ? `<div>駐車場：有り${parkingFee ? `（${parkingFee}）` : ""}</div>` : ""}
                 ${ward ? `<div>${ward}</div>` : ""}
@@ -1139,7 +1154,16 @@
     function matchUsedWalkFilter(p) {
       const max = getSelectNumber("used-walk-max");
       if (max === null) return true;
+      if (p.walkMinutes === null || p.walkMinutes === undefined || p.walkMinutes === "") return false;
       const walk = Number(p.walkMinutes);
+      return Number.isFinite(walk) && walk <= max;
+    }
+
+    function matchUsedBusWalkFilter(p) {
+      const max = getSelectNumber("used-bus-walk-max");
+      if (max === null) return true;
+      if (p.busWalkMinutes === null || p.busWalkMinutes === undefined || p.busWalkMinutes === "") return false;
+      const walk = Number(p.busWalkMinutes);
       return Number.isFinite(walk) && walk <= max;
     }
 
@@ -1188,6 +1212,7 @@
           matchUsedPriceFilter(p) &&
           matchUsedAreaFilter(p) &&
           matchUsedWalkFilter(p) &&
+          matchUsedBusWalkFilter(p) &&
           matchUsedAgeFilter(p) &&
           matchUsedLayoutFilter(p, getActiveFilters("used-layout")) &&
           matchUsedDirectionFilter(p, getActiveFilters("used-direction")) &&
