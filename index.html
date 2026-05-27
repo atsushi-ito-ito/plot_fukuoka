@@ -343,6 +343,64 @@
       letter-spacing: 0.02em;
     }
 
+    #active-filter-summary {
+      position: absolute;
+      top: 16px;
+      left: 220px;
+      z-index: 9000;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      max-width: min(760px, calc(100vw - 236px));
+      min-height: 36px;
+      box-sizing: border-box;
+      padding: 5px 8px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(203, 213, 225, 0.95);
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.18);
+      pointer-events: none;
+    }
+
+    #active-filter-summary[hidden] {
+      display: none;
+    }
+
+    .active-filter-label {
+      color: #111827;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .active-filter-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid rgba(203, 213, 225, 0.9);
+      color: #111827;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.2;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      #active-filter-summary {
+        top: 58px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+      }
+    }
+
     /* ========= 坪単価 凡例 ========= */
     .map-legend {
       position: absolute;
@@ -473,6 +531,7 @@
 
   <!-- ① 件数カウンターバッジ -->
   <div id="property-count-badge">― 件表示中</div>
+  <div id="active-filter-summary" hidden></div>
 
   <div id="data-notice" hidden></div>
 
@@ -1023,6 +1082,61 @@
       return Number.isFinite(number) ? number : null;
     }
 
+    function formatUsedRange(minId, maxId, unit, minSuffix, maxSuffix) {
+      const min = getSelectNumber(minId);
+      const max = getSelectNumber(maxId);
+      if (min === null && max === null) return "";
+      const minLabel = min !== null ? `${Number(min).toLocaleString("ja-JP")}${unit}${minSuffix}` : "";
+      const maxLabel = max !== null ? `${Number(max).toLocaleString("ja-JP")}${unit}${maxSuffix}` : "";
+      return `${minLabel}${maxLabel}`;
+    }
+
+    function getUsedActiveFilterTags() {
+      if (propertyMode !== "used") return [];
+
+      const tags = [];
+      const wards = getActiveFilters("used-ward").filter(v => v !== "all");
+      wards.forEach(ward => tags.push(`#${ward}`));
+
+      const priceLabel = formatUsedRange("used-price-min", "used-price-max", "万円", "以上", "以内");
+      if (priceLabel) tags.push(`#${priceLabel}`);
+
+      const areaLabel = formatUsedRange("used-area-min", "used-area-max", "㎡", "以上", "以下");
+      if (areaLabel) tags.push(`#${areaLabel}`);
+
+      const walkMax = getSelectNumber("used-walk-max");
+      if (walkMax !== null) tags.push(`#駅徒歩${walkMax}分以内`);
+
+      const busWalkMax = getSelectNumber("used-bus-walk-max");
+      if (busWalkMax !== null) tags.push(`#バス徒歩${busWalkMax}分以内`);
+
+      const ageLabel = formatUsedRange("used-age-min", "used-age-max", "年", "以上", "以内");
+      if (ageLabel) tags.push(`#築${ageLabel}`);
+
+      const layouts = getActiveFilters("used-layout").filter(v => v !== "all");
+      layouts.forEach(layout => tags.push(`#${layout}`));
+
+      if (document.getElementById("used-parking-only")?.checked) {
+        tags.push("#駐車場あり");
+      }
+
+      const directions = getActiveFilters("used-direction").filter(v => v !== "all");
+      directions.forEach(direction => tags.push(`#${direction}向き`));
+
+      return tags;
+    }
+
+    function updateActiveFilterSummary() {
+      const summary = document.getElementById("active-filter-summary");
+      if (!summary) return;
+
+      const tags = getUsedActiveFilterTags();
+      summary.hidden = tags.length === 0;
+      summary.innerHTML = tags.length
+        ? `<span class="active-filter-label">絞り込み条件：</span>${tags.map(tag => `<span class="active-filter-tag">${tag}</span>`).join("")}`
+        : "";
+    }
+
     /* ========= 各軸のマッチ判定 ========= */
     function matchTsuboFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
@@ -1327,6 +1441,7 @@
           ? `${filtered.length} / ${matching.length} 件表示中`
           : `${filtered.length} 件表示中`;
       }
+      updateActiveFilterSummary();
 
       const notice = document.getElementById("data-notice");
       if (notice) {
@@ -1350,6 +1465,9 @@
       });
       document.querySelectorAll(".mode-filter:not([hidden]) .used-filter-select").forEach(select => {
         select.value = "";
+      });
+      document.querySelectorAll(".mode-filter:not([hidden]) .used-filter-checkbox").forEach(input => {
+        input.checked = false;
       });
     }
 
