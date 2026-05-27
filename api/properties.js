@@ -91,7 +91,7 @@ module.exports = async (req, res) => {
         });
         return normalizeRow(obj, row); // rawRowも渡してW列位置フォールバックに使用
       })
-      .filter((p) => p.name); // name無しは除外
+      .filter((p) => p.name && !/^\d+$/.test(String(p.name).trim())); // name無し・集計行は除外
 
     // キャッシュ（更新頻度が高いなら短めに）
     res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=300");
