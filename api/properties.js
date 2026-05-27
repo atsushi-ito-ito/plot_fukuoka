@@ -15,7 +15,16 @@ function toNumberOrNull(v) {
   return Number.isFinite(n) ? n : null;
 }
 
-function normalizeRow(obj) {
+function normalizeRow(obj, rawRow) {
+  // W列(index 22)のURLを取得：ヘッダー名が不明なためヘッダー名複数 + 位置フォールバック
+  const urlFromHeader =
+    obj.url || obj.URL ||
+    obj["物件URL"] || obj["物件HP"] || obj["HP"] ||
+    obj["ホームページ"] || obj["リンク"] || obj["Link"] || "";
+  const urlFromPosition =
+    rawRow && rawRow[22] ? String(rawRow[22]).trim() : "";
+  const url = urlFromHeader || urlFromPosition;
+
   // フロントが期待する形に整える
   return {
     name: obj.name || "",
@@ -28,6 +37,7 @@ function normalizeRow(obj) {
     completion: obj.completion || "",
     walk: obj.walk || "",
     ward: obj.ward || "",
+    url: url.startsWith("http") ? url : "", // httpで始まるURLのみ有効
   };
 }
 
@@ -79,7 +89,7 @@ module.exports = async (req, res) => {
         headers.forEach((h, i) => {
           obj[h] = row[i] !== undefined ? String(row[i]).trim() : "";
         });
-        return normalizeRow(obj);
+        return normalizeRow(obj, row); // rawRowも渡してW列位置フォールバックに使用
       })
       .filter((p) => p.name); // name無しは除外
 

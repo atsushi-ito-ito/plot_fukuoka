@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 
   <style>
     html, body {
@@ -95,8 +95,8 @@
 
     .filter-toggle {
       position: absolute;
-      top: 16px;
-      left: 16px;
+      top: 80px;
+      left: 10px;
       z-index: 9000;
       border: none;
       border-radius: 999px;
@@ -110,6 +110,45 @@
     }
     .filter-toggle.hidden {
       display: none;
+    }
+
+    .property-mode-switch {
+      position: absolute;
+      top: 16px;
+      left: 58px;
+      z-index: 9000;
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
+    }
+
+    .mode-option {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+      min-height: 34px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+    }
+
+    .mode-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mode-option:has(input:checked) {
+      background: #020617;
+      color: #ffffff;
     }
 
     #filter-overlay {
@@ -226,11 +265,192 @@
       border-color: #020617;
     }
 
+    .filter-field {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .filter-field:first-child {
+      margin-top: 0;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4b5563;
+    }
+
+    .filter-select-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .filter-select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 8px 10px;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .mode-filter[hidden] {
+      display: none;
+    }
+
+    .checkbox-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      cursor: pointer;
+    }
+
+    .checkbox-option input {
+      width: 18px;
+      height: 18px;
+      accent-color: #020617;
+    }
+
     @media (min-width: 768px) {
       #filter-panel {
         max-width: 420px;
         width: 360px;
       }
+    }
+
+    /* ========= 件数カウンターバッジ ========= */
+    #property-count-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 9000;
+      background: #020617;
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.45);
+      pointer-events: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* ========= 坪単価 凡例 ========= */
+    .map-legend {
+      position: absolute;
+      bottom: 32px;
+      right: 16px;
+      z-index: 9000;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .map-legend[hidden] { display: none; }
+    .legend-title {
+      font-weight: 700;
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .legend-item:last-child { margin-bottom: 0; }
+    .legend-bar {
+      width: 4px;
+      height: 16px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    /* ========= フィルターリセットボタン ========= */
+    .filter-reset-btn {
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .filter-reset-btn:hover {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+    }
+
+    /* ========= 物件HP リンクボタン ========= */
+    .card-link-btn {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 3px 10px;
+      background: #2563eb;
+      color: #ffffff !important;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: background 0.15s ease;
+    }
+    .card-link-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* ========= クラスターバッジ ========= */
+    .custom-cluster-icon {
+      background: #020617;
+      color: #ffffff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.4);
+      border: 2px solid #ffffff;
+    }
+
+    #data-notice {
+      position: absolute;
+      left: 10px;
+      bottom: 24px;
+      z-index: 9000;
+      max-width: min(420px, calc(100vw - 20px));
+      box-sizing: border-box;
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.14);
+    }
+
+    #data-notice[hidden] {
+      display: none;
     }
   </style>
 </head>
@@ -238,32 +458,78 @@
 <body>
   <div id="map"></div>
 
+  <div class="property-mode-switch" role="radiogroup" aria-label="物件種別">
+    <label class="mode-option">
+      <input type="radio" name="property-mode" value="new" checked>
+      新築
+    </label>
+    <label class="mode-option">
+      <input type="radio" name="property-mode" value="used">
+      中古
+    </label>
+  </div>
+
   <button id="filter-toggle" class="filter-toggle">絞り込み</button>
+
+  <!-- ① 件数カウンターバッジ -->
+  <div id="property-count-badge">― 件表示中</div>
+
+  <div id="data-notice" hidden></div>
+
+  <!-- ② 坪単価 凡例 -->
+  <div id="tsubo-legend" class="map-legend">
+    <div class="legend-title">坪単価（万円）</div>
+    <div class="legend-item"><div class="legend-bar" style="background:#22c55e;"></div><span>〜200万円</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#f97316;"></div><span>200〜300万円</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#ef4444;"></div><span>300万円〜</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#6b7280;"></div><span>価格不明</span></div>
+  </div>
+
+  <div id="used-price-legend" class="map-legend" hidden>
+    <div class="legend-title">中古価格（万円）</div>
+    <div class="legend-item"><div class="legend-bar" style="background:#22c55e;"></div><span>〜3,000万円</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#f97316;"></div><span>3,000〜6,000万円</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#ef4444;"></div><span>6,000万円〜</span></div>
+    <div class="legend-item"><div class="legend-bar" style="background:#6b7280;"></div><span>価格不明</span></div>
+  </div>
+
   <div id="filter-overlay"></div>
 
   <aside id="filter-panel">
     <div class="filter-panel-inner">
       <div class="filter-header">
-        <h1 class="app-title">福岡市 新築マンションMAP</h1>
-        <button id="filter-close" class="filter-close" aria-label="閉じる">×</button>
+        <h1 class="app-title" id="filter-title">福岡市 新築マンションMAP</h1>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <!-- ③ 全リセットボタン -->
+          <button id="filter-reset" class="filter-reset-btn" title="すべての条件をリセット">リセット</button>
+          <button id="filter-close" class="filter-close" aria-label="閉じる">×</button>
+        </div>
       </div>
 
       <!-- エリア（ward を流用） -->
-      <section class="filter-section">
+      <section class="filter-section mode-filter" data-property-mode="new">
         <h2 class="filter-section-title">エリア</h2>
         <div class="chip-row" id="chip-row-area">
           <button class="chip chip-active" data-group="area" data-filter="all">全</button>
           <button class="chip" data-group="area" data-filter="中央区">中央区</button>
+          <button class="chip" data-group="area" data-filter="博多区">博多区</button>
           <button class="chip" data-group="area" data-filter="南区">南区</button>
           <button class="chip" data-group="area" data-filter="東区">東区</button>
           <button class="chip" data-group="area" data-filter="早良区">早良区</button>
           <button class="chip" data-group="area" data-filter="城南区">城南区</button>
           <button class="chip" data-group="area" data-filter="西区">西区</button>
+          <button class="chip" data-group="area" data-filter="春日市">春日市</button>
+          <button class="chip" data-group="area" data-filter="大野城市">大野城市</button>
+          <button class="chip" data-group="area" data-filter="筑紫野市">筑紫野市</button>
+          <button class="chip" data-group="area" data-filter="太宰府市">太宰府市</button>
+          <button class="chip" data-group="area" data-filter="糸島市">糸島市</button>
+          <button class="chip" data-group="area" data-filter="福津市">福津市</button>
+          <button class="chip" data-group="area" data-filter="糟屋郡">糟屋郡</button>
         </div>
       </section>
 
       <!-- 坪単価レンジ -->
-      <section class="filter-section">
+      <section class="filter-section mode-filter" data-property-mode="new">
         <h2 class="filter-section-title">坪単価レンジ</h2>
         <div class="chip-row" id="chip-row-tsubo">
           <button class="chip chip-active" data-group="tsubo" data-filter="all">全</button>
@@ -277,7 +543,7 @@
       </section>
 
       <!-- 戸数規模 -->
-      <section class="filter-section">
+      <section class="filter-section mode-filter" data-property-mode="new">
         <h2 class="filter-section-title">戸数規模</h2>
         <div class="chip-row" id="chip-row-units">
           <button class="chip chip-active" data-group="units" data-filter="all">全</button>
@@ -288,7 +554,7 @@
       </section>
 
       <!-- 最寄駅までの徒歩分数 -->
-      <section class="filter-section">
+      <section class="filter-section mode-filter" data-property-mode="new">
         <h2 class="filter-section-title">最寄駅までの徒歩分数</h2>
         <div class="chip-row" id="chip-row-walk">
           <button class="chip chip-active" data-group="walk" data-filter="all">全</button>
@@ -299,8 +565,21 @@
         </div>
       </section>
 
+      <!-- 竣工予定年 -->
+      <section class="filter-section mode-filter" data-property-mode="new">
+        <h2 class="filter-section-title">竣工予定年</h2>
+        <div class="chip-row" id="chip-row-completion">
+          <button class="chip chip-active" data-group="completion" data-filter="all">全</button>
+          <button class="chip" data-group="completion" data-filter="2025">2025年</button>
+          <button class="chip" data-group="completion" data-filter="2026">2026年</button>
+          <button class="chip" data-group="completion" data-filter="2027">2027年</button>
+          <button class="chip" data-group="completion" data-filter="2028+">2028年以降</button>
+          <button class="chip" data-group="completion" data-filter="unknown">未定</button>
+        </div>
+      </section>
+
       <!-- 価格（70㎡換算） -->
-      <section class="filter-section">
+      <section class="filter-section mode-filter" data-property-mode="new">
         <h2 class="filter-section-title">価格（70㎡換算）</h2>
         <div class="chip-row" id="chip-row-price">
           <button class="chip chip-active" data-group="price" data-filter="all">全</button>
@@ -314,16 +593,176 @@
         </div>
       </section>
 
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">行政区</h2>
+        <div class="chip-row">
+          <button class="chip chip-active" data-group="used-ward" data-filter="all">全</button>
+          <button class="chip" data-group="used-ward" data-filter="博多区">博多区</button>
+          <button class="chip" data-group="used-ward" data-filter="中央区">中央区</button>
+          <button class="chip" data-group="used-ward" data-filter="早良区">早良区</button>
+          <button class="chip" data-group="used-ward" data-filter="西区">西区</button>
+          <button class="chip" data-group="used-ward" data-filter="城南区">城南区</button>
+          <button class="chip" data-group="used-ward" data-filter="南区">南区</button>
+          <button class="chip" data-group="used-ward" data-filter="東区">東区</button>
+          <button class="chip" data-group="used-ward" data-filter="新宮町">新宮町</button>
+        </div>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">金額</h2>
+        <div class="filter-select-row">
+          <label class="filter-field">
+            <span class="filter-label">以上</span>
+            <select class="filter-select used-filter-select" id="used-price-min">
+              <option value="">指定なし</option>
+              <option value="1000">1,000万円以上</option>
+              <option value="2000">2,000万円以上</option>
+              <option value="3000">3,000万円以上</option>
+              <option value="4000">4,000万円以上</option>
+              <option value="5000">5,000万円以上</option>
+              <option value="6000">6,000万円以上</option>
+              <option value="7000">7,000万円以上</option>
+              <option value="8000">8,000万円以上</option>
+              <option value="9000">9,000万円以上</option>
+              <option value="10000">10,000万円以上</option>
+            </select>
+          </label>
+          <label class="filter-field">
+            <span class="filter-label">以内</span>
+            <select class="filter-select used-filter-select" id="used-price-max">
+              <option value="">指定なし</option>
+              <option value="1000">1,000万円以内</option>
+              <option value="2000">2,000万円以内</option>
+              <option value="3000">3,000万円以内</option>
+              <option value="4000">4,000万円以内</option>
+              <option value="5000">5,000万円以内</option>
+              <option value="6000">6,000万円以内</option>
+              <option value="7000">7,000万円以内</option>
+              <option value="8000">8,000万円以内</option>
+              <option value="9000">9,000万円以内</option>
+              <option value="10000">10,000万円以内</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">面積</h2>
+        <div class="filter-select-row">
+          <label class="filter-field">
+            <span class="filter-label">以上</span>
+            <select class="filter-select used-filter-select" id="used-area-min">
+              <option value="">指定なし</option>
+              <option value="40">40㎡以上</option>
+              <option value="50">50㎡以上</option>
+              <option value="60">60㎡以上</option>
+              <option value="70">70㎡以上</option>
+              <option value="80">80㎡以上</option>
+              <option value="90">90㎡以上</option>
+              <option value="100">100㎡以上</option>
+            </select>
+          </label>
+          <label class="filter-field">
+            <span class="filter-label">以下</span>
+            <select class="filter-select used-filter-select" id="used-area-max">
+              <option value="">指定なし</option>
+              <option value="40">40㎡以下</option>
+              <option value="50">50㎡以下</option>
+              <option value="60">60㎡以下</option>
+              <option value="70">70㎡以下</option>
+              <option value="80">80㎡以下</option>
+              <option value="90">90㎡以下</option>
+              <option value="100">100㎡以下</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">最寄り駅距離</h2>
+        <select class="filter-select used-filter-select" id="used-walk-max">
+          <option value="">指定なし</option>
+          <option value="3">3分以内</option>
+          <option value="5">5分以内</option>
+          <option value="7">7分以内</option>
+          <option value="10">10分以内</option>
+          <option value="15">15分以内</option>
+        </select>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">築年数</h2>
+        <div class="filter-select-row">
+          <label class="filter-field">
+            <span class="filter-label">以上</span>
+            <select class="filter-select used-filter-select" id="used-age-min">
+              <option value="">指定なし</option>
+              <option value="5">築5年以上</option>
+              <option value="10">築10年以上</option>
+              <option value="15">築15年以上</option>
+              <option value="20">築20年以上</option>
+              <option value="25">築25年以上</option>
+              <option value="30">築30年以上</option>
+            </select>
+          </label>
+          <label class="filter-field">
+            <span class="filter-label">以下</span>
+            <select class="filter-select used-filter-select" id="used-age-max">
+              <option value="">指定なし</option>
+              <option value="5">築5年以下</option>
+              <option value="10">築10年以下</option>
+              <option value="15">築15年以下</option>
+              <option value="20">築20年以下</option>
+              <option value="25">築25年以下</option>
+              <option value="30">築30年以下</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">間取り</h2>
+        <div class="chip-row">
+          <button class="chip chip-active" data-group="used-layout" data-filter="all">全</button>
+          <button class="chip" data-group="used-layout" data-filter="2LDK">2LDK</button>
+          <button class="chip" data-group="used-layout" data-filter="3LDK">3LDK</button>
+          <button class="chip" data-group="used-layout" data-filter="4LDK">4LDK</button>
+        </div>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">駐車場</h2>
+        <label class="checkbox-option">
+          <input type="checkbox" id="used-parking-only" class="used-filter-checkbox">
+          有り
+        </label>
+      </section>
+
+      <section class="filter-section mode-filter" data-property-mode="used" hidden>
+        <h2 class="filter-section-title">方角</h2>
+        <div class="chip-row">
+          <button class="chip chip-active" data-group="used-direction" data-filter="all">全</button>
+          <button class="chip" data-group="used-direction" data-filter="東">東</button>
+          <button class="chip" data-group="used-direction" data-filter="西">西</button>
+          <button class="chip" data-group="used-direction" data-filter="南">南</button>
+          <button class="chip" data-group="used-direction" data-filter="北">北</button>
+        </div>
+      </section>
+
     </div>
   </aside>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="/used_properties.js"></script>
 
   <script>
     // ==========================
     //  Sheets(API)から物件データを取得
     // ==========================
     let properties = [];
+    let newProperties = [];
+    let propertyMode = "new";
 
     async function loadPropertiesFromApi() {
       const res = await fetch("/api/properties", { cache: "no-store" });
@@ -382,6 +821,14 @@
       return Math.round(v * tsuboFor70);
     }
 
+    function getUsedPriceColor(price) {
+      const v = Number(price);
+      if (!Number.isFinite(v)) return "#6b7280";
+      if (v <= 3000) return "#22c55e";
+      if (v <= 6000) return "#f97316";
+      return "#ef4444";
+    }
+
     /* ========= 戸数の数値判定 ========= */
     function parseUnitsCount(units) {
       if (!units) return null;
@@ -393,12 +840,55 @@
     function createCardHTML(p, mode) {
       // 見た目用に " を外す（任意）
       const name = stripOuterQuotes(p.name);
+
+      if (p.type === "used") {
+        const priceLabel = p.priceLabel || (p.price ? `${Number(p.price).toLocaleString("ja-JP")}万円` : "");
+        const areaLabel = p.areaLabel || (p.area ? `${p.area}㎡` : "");
+        const layout = stripOuterQuotes(p.layout);
+        const station = stripOuterQuotes(p.station);
+        const walk = stripOuterQuotes(p.walk);
+        const ward = stripOuterQuotes(p.ward);
+        const address = stripOuterQuotes(p.address);
+        const age = stripOuterQuotes(p.ageLabel);
+        const direction = stripOuterQuotes(p.direction);
+        const monthlyFee = stripOuterQuotes(p.monthlyFeeTotalLabel);
+        const parkingFee = stripOuterQuotes(p.parkingFeeLabel);
+        const color = getUsedPriceColor(p.price);
+
+        if (mode === "full") {
+          return `
+            <div class="property-card property-card-full">
+              <div class="tsubo-bar" style="background-color:${color};"></div>
+              <div class="property-card-inner">
+                <div class="property-card-title">${name}</div>
+                ${priceLabel ? `<div class="highlight">${priceLabel}</div>` : ""}
+                ${areaLabel || layout ? `<div>${[areaLabel, layout].filter(Boolean).join(" / ")}</div>` : ""}
+                ${age || direction ? `<div>${[age, direction].filter(Boolean).join(" / ")}</div>` : ""}
+                ${station ? `<div>${station}${walk ? ` 徒歩${walk}` : ""}</div>` : ""}
+                ${monthlyFee ? `<div>管理費+修繕積立金：${monthlyFee}</div>` : ""}
+                ${p.parkingAvailable ? `<div>駐車場：有り${parkingFee ? `（${parkingFee}）` : ""}</div>` : ""}
+                ${ward ? `<div>${ward}</div>` : ""}
+                ${address ? `<div>${address}</div>` : ""}
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="property-card property-card-compact">
+            <div class="tsubo-bar-compact" style="background-color:${color};"></div>
+            <span>${priceLabel || layout || "中古"}</span>
+          </div>
+        `;
+      }
+
       const tsubo = stripOuterQuotes(p.tsubo);
       const units = stripOuterQuotes(p.units);
       const developer = stripOuterQuotes(p.developer);
       const sale = stripOuterQuotes(p.sale);
       const completion = stripOuterQuotes(p.completion);
       const walk = stripOuterQuotes(p.walk);
+      const url = p.url || "";
 
       const tsuboColor   = getTsuboColor(tsubo);
       const price70Label = get70mPriceLabel(tsubo);
@@ -411,11 +901,12 @@
               <div class="property-card-title">${name}</div>
               ${tsubo ? `<div class="highlight">${tsubo}</div>` : ""}
               ${price70Label ? `<div>${price70Label}</div>` : ""}
-              ${units ? `<div>${units}</div>` : ""}
+              ${units ? `<div>戸数：${units}</div>` : ""}
               ${developer ? `<div>${developer}</div>` : ""}
               ${sale ? `<div>販売：${sale}</div>` : ""}
               ${completion ? `<div>竣工：${completion}</div>` : ""}
               ${walk ? `<div>最寄駅まで徒歩：${walk}</div>` : ""}
+              ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="card-link-btn" onclick="event.stopPropagation()">物件HP →</a>` : ""}
             </div>
           </div>
         `;
@@ -452,8 +943,14 @@
 
     /* ========= プロット管理 ========= */
     let rendered = [];
+    let clusterGroup = null;
+    const cardPositions = new Map();
 
     function clearRendered() {
+      if (clusterGroup) {
+        map.removeLayer(clusterGroup);
+        clusterGroup = null;
+      }
       rendered.forEach(obj => {
         if (obj.dot)  map.removeLayer(obj.dot);
         if (obj.card) map.removeLayer(obj.card);
@@ -474,12 +971,41 @@
       return patterns[index % patterns.length];
     }
 
+    function getPropertyKey(p) {
+      return [
+        p.type || propertyMode,
+        p.id || "",
+        p.name || "",
+        p.address || "",
+        p.lat || "",
+        p.lng || "",
+      ].join("|");
+    }
+
+    function getCardPosition(p, index, mode) {
+      const saved = cardPositions.get(getPropertyKey(p));
+      if (saved) return saved;
+      const offset = getCardOffset(index, mode);
+      return [Number(p.lat) + offset.lat, Number(p.lng) + offset.lng];
+    }
+
     /* ========= フィルタ取得 ========= */
     function getActiveFilters(group) {
-      const chips = document.querySelectorAll(`.chip[data-group="${group}"].chip-active`);
-      const values = Array.from(chips).map(c => c.dataset.filter);
+      const chips = Array.from(document.querySelectorAll(`.chip[data-group="${group}"].chip-active`))
+        .filter(c => {
+          const section = c.closest(".mode-filter");
+          return !section || !section.hidden;
+        });
+      const values = chips.map(c => c.dataset.filter);
       if (values.length === 0 || values.includes("all")) return ["all"];
       return values;
+    }
+
+    function getSelectNumber(id) {
+      const value = document.getElementById(id)?.value;
+      if (!value) return null;
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
     }
 
     /* ========= 各軸のマッチ判定 ========= */
@@ -559,6 +1085,24 @@
       return filters.includes(w);
     }
 
+    function matchCompletionFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+      const s = String(p.completion ?? "").trim();
+      const yearMatch = s.match(/^(\d{4})/);
+      const isUnknown = !yearMatch || s === "未定";
+
+      for (const f of filters) {
+        if (f === "unknown" && isUnknown) return true;
+        if (isUnknown) continue;
+        const y = parseInt(yearMatch[1], 10);
+        if (f === "2025" && y === 2025) return true;
+        if (f === "2026" && y === 2026) return true;
+        if (f === "2027" && y === 2027) return true;
+        if (f === "2028+" && y >= 2028) return true;
+      }
+      return false;
+    }
+
     function matchUnitsFilter(p, filters) {
       if (!filters || filters.includes("all")) return true;
       const v = parseUnitsCount(p.units);
@@ -572,67 +1116,249 @@
       return false;
     }
 
-    /* ========= プロット描画 ========= */
-    let initialized = false;
+    function matchUsedPriceFilter(p) {
+      const min = getSelectNumber("used-price-min");
+      const max = getSelectNumber("used-price-max");
+      const price = Number(p.price);
+      if (!Number.isFinite(price)) return min === null && max === null;
+      if (min !== null && price < min) return false;
+      if (max !== null && price > max) return false;
+      return true;
+    }
 
+    function matchUsedAreaFilter(p) {
+      const min = getSelectNumber("used-area-min");
+      const max = getSelectNumber("used-area-max");
+      const area = Number(p.area);
+      if (!Number.isFinite(area)) return min === null && max === null;
+      if (min !== null && area < min) return false;
+      if (max !== null && area > max) return false;
+      return true;
+    }
+
+    function matchUsedWalkFilter(p) {
+      const max = getSelectNumber("used-walk-max");
+      if (max === null) return true;
+      const walk = Number(p.walkMinutes);
+      return Number.isFinite(walk) && walk <= max;
+    }
+
+    function matchUsedAgeFilter(p) {
+      const min = getSelectNumber("used-age-min");
+      const max = getSelectNumber("used-age-max");
+      const age = Number(p.ageYears);
+      if (!Number.isFinite(age)) return min === null && max === null;
+      if (min !== null && age < min) return false;
+      if (max !== null && age > max) return false;
+      return true;
+    }
+
+    function matchUsedLayoutFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+      const layout = String(p.layout || "");
+      return filters.some(f => layout.includes(f));
+    }
+
+    function matchUsedDirectionFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+      const direction = String(p.direction || "");
+      return filters.some(f => direction.includes(f));
+    }
+
+    function matchUsedParkingFilter(p) {
+      const parkingOnly = document.getElementById("used-parking-only")?.checked;
+      return !parkingOnly || p.parkingAvailable === true;
+    }
+
+    function matchUsedWardFilter(p, filters) {
+      if (!filters || filters.includes("all")) return true;
+      return filters.includes(p.ward);
+    }
+
+    function currentProperties() {
+      if (propertyMode === "used") {
+        return typeof usedProperties !== "undefined" && Array.isArray(usedProperties) ? usedProperties : [];
+      }
+      return newProperties;
+    }
+
+    function matchCurrentFilters(p) {
+      if (propertyMode === "used") {
+        return (
+          matchUsedPriceFilter(p) &&
+          matchUsedAreaFilter(p) &&
+          matchUsedWalkFilter(p) &&
+          matchUsedAgeFilter(p) &&
+          matchUsedLayoutFilter(p, getActiveFilters("used-layout")) &&
+          matchUsedDirectionFilter(p, getActiveFilters("used-direction")) &&
+          matchUsedParkingFilter(p) &&
+          matchUsedWardFilter(p, getActiveFilters("used-ward"))
+        );
+      }
+
+      return (
+        matchAreaFilter(p, getActiveFilters("area")) &&
+        matchTsuboFilter(p, getActiveFilters("tsubo")) &&
+        matchUnitsFilter(p, getActiveFilters("units")) &&
+        matchWalkFilter(p, getActiveFilters("walk")) &&
+        matchPriceFilter(p, getActiveFilters("price")) &&
+        matchCompletionFilter(p, getActiveFilters("completion"))
+      );
+    }
+
+    function hasCoordinates(p) {
+      return p.lat != null && p.lng != null && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng));
+    }
+
+    /* ========= プロット描画 ========= */
     function plotAll() {
+      properties = currentProperties();
       if (!Array.isArray(properties)) return;
 
       clearRendered();
       const mode = getModeFromZoom();
 
-      const areaFilters  = getActiveFilters("area");
-      const tsuboFilters = getActiveFilters("tsubo");
-      const walkFilters  = getActiveFilters("walk");
-      const priceFilters = getActiveFilters("price");
-      const unitsFilters = getActiveFilters("units");
+      // フィルター済みリストを先に作成
+      const matching = properties.filter(matchCurrentFilters);
+      const filtered = matching.filter(hasCoordinates);
 
-      properties.forEach((p, index) => {
-        // ✅ null/undefined を弾く（0判定じゃない）
-        if (p.lat == null || p.lng == null) return;
+      if (mode === "compact") {
+        // ④ コンパクトモード：クラスタリング表示
+        clusterGroup = L.markerClusterGroup({
+          maxClusterRadius: 55,
+          showCoverageOnHover: false,
+          iconCreateFunction: function(cluster) {
+            const count = cluster.getChildCount();
+            return L.divIcon({
+              html: `<div class="custom-cluster-icon">${count}</div>`,
+              className: "",
+              iconSize: L.point(36, 36),
+              iconAnchor: [18, 18],
+            });
+          },
+        });
 
-        if (!matchAreaFilter(p, areaFilters)) return;
-        if (!matchTsuboFilter(p, tsuboFilters)) return;
-        if (!matchUnitsFilter(p, unitsFilters)) return;
-        if (!matchWalkFilter(p, walkFilters)) return;
-        if (!matchPriceFilter(p, priceFilters)) return;
+        filtered.forEach(p => {
+          const marker = L.marker([p.lat, p.lng], {
+            icon: createCardIcon(p, "compact"),
+          });
+          // URLがあればクリックで物件HPを開く
+          if (p.url) {
+            marker.on("click", () => { window.open(p.url, "_blank", "noopener,noreferrer"); });
+            marker.getElement && marker.once("add", () => {
+              const el = marker.getElement();
+              if (el) el.style.cursor = "pointer";
+            });
+          }
+          clusterGroup.addLayer(marker);
+          rendered.push({ clusterMarker: marker });
+        });
 
-        const base = [p.lat, p.lng];
+        map.addLayer(clusterGroup);
 
-        const dot = L.circleMarker(base, {
-          radius: 4,
-          color: "#2563eb",
-          fillColor: "#2563eb",
-          weight: 2,
-          fillOpacity: 1,
-        }).addTo(map);
+      } else {
+        // フルモード：ドット＋カード＋ラインで表示
+        filtered.forEach((p, index) => {
+          const base = [p.lat, p.lng];
 
-        const offset = getCardOffset(index, mode);
-        const cardPos = [p.lat + offset.lat, p.lng + offset.lng];
+          const dot = L.circleMarker(base, {
+            radius: 4,
+            color: "#2563eb",
+            fillColor: "#2563eb",
+            weight: 2,
+            fillOpacity: 1,
+          }).addTo(map);
 
-        const cardMarker = L.marker(cardPos, {
-          icon: createCardIcon(p, mode),
-          draggable: mode === "full",
-        }).addTo(map);
+          const cardPos = getCardPosition(p, index, mode);
+          const propertyKey = getPropertyKey(p);
 
-        const line = L.polyline([base, cardPos], {
-          color: "#2563eb",
-          weight: 2.5,
-        }).addTo(map);
+          const cardMarker = L.marker(cardPos, {
+            icon: createCardIcon(p, "full"),
+            draggable: true,
+          }).addTo(map);
 
-        if (mode === "full") {
+          const line = L.polyline([base, cardPos], {
+            color: "#2563eb",
+            weight: 2.5,
+          }).addTo(map);
+
           cardMarker.on("drag", (e) => {
             const newPos = e.target.getLatLng();
             line.setLatLngs([base, newPos]);
           });
-        }
+          cardMarker.on("dragend", (e) => {
+            const newPos = e.target.getLatLng();
+            cardPositions.set(propertyKey, [newPos.lat, newPos.lng]);
+          });
 
-        rendered.push({ dot, card: cardMarker, line });
-      });
+          rendered.push({ dot, card: cardMarker, line });
+        });
+      }
+
+      // ① 件数カウンターを更新
+      const badge = document.getElementById("property-count-badge");
+      if (badge) {
+        badge.textContent = propertyMode === "used"
+          ? `${filtered.length} / ${matching.length} 件表示中`
+          : `${filtered.length} 件表示中`;
+      }
+
+      const notice = document.getElementById("data-notice");
+      if (notice) {
+        const missing = matching.length - filtered.length;
+        if (propertyMode === "used" && missing > 0) {
+          notice.hidden = false;
+          notice.textContent = `中古CSVには緯度経度が含まれていないため、座標未設定の${missing}件は地図に表示していません。`;
+        } else {
+          notice.hidden = true;
+          notice.textContent = "";
+        }
+      }
     }
 
     // zoom時は、ロード前でも呼ばれるのでガードしつつ登録
     map.on("zoomend", plotAll);
+
+    function resetVisibleFilters() {
+      document.querySelectorAll(".mode-filter:not([hidden]) .chip").forEach(chip => {
+        chip.classList.toggle("chip-active", chip.dataset.filter === "all");
+      });
+      document.querySelectorAll(".mode-filter:not([hidden]) .used-filter-select").forEach(select => {
+        select.value = "";
+      });
+    }
+
+    function applyPropertyMode(mode) {
+      propertyMode = mode;
+      document.querySelectorAll(".mode-filter").forEach(section => {
+        section.hidden = section.dataset.propertyMode !== mode;
+      });
+
+      const title = document.getElementById("filter-title");
+      if (title) title.textContent = mode === "used" ? "福岡都市圏 中古マンションMAP" : "福岡市 新築マンションMAP";
+
+      const legend = document.getElementById("tsubo-legend");
+      if (legend) legend.hidden = mode === "used";
+      const usedLegend = document.getElementById("used-price-legend");
+      if (usedLegend) usedLegend.hidden = mode !== "used";
+
+      resetVisibleFilters();
+      plotAll();
+    }
+
+    document.querySelectorAll('input[name="property-mode"]').forEach(input => {
+      input.addEventListener("change", () => {
+        if (input.checked) applyPropertyMode(input.value);
+      });
+    });
+
+    document.querySelectorAll(".used-filter-select").forEach(select => {
+      select.addEventListener("change", plotAll);
+    });
+
+    document.querySelectorAll(".used-filter-checkbox").forEach(input => {
+      input.addEventListener("change", plotAll);
+    });
 
     // ==========================
     //   チップクリックイベント
@@ -691,12 +1417,18 @@
     filterClose.addEventListener("click", closeFilter);
     filterOverlay.addEventListener("click", closeFilter);
 
+    // ③ リセットボタン：全フィルターを "all" に戻す
+    document.getElementById("filter-reset").addEventListener("click", () => {
+      resetVisibleFilters();
+      plotAll();
+    });
+
     // ==========================
     //  初回ロード：API読み込み後に描画
     // ==========================
     (async () => {
       try {
-        properties = await loadPropertiesFromApi();
+        newProperties = await loadPropertiesFromApi();
         plotAll();
       } catch (e) {
         console.error(e);
